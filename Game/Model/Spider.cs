@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 
 using OpenTK;
 
@@ -7,43 +6,50 @@ namespace Game.Model
 {
 	public class Spider : IControlledCreature
 	{
+		#region Constants and Fields
+
+		private const float MaxPitch = 1;
+
 		private readonly World world;
 
-		public Spider(World world, Vector3 contactPoint, Vector3 contactPointNormal)
-		{
-			this.world = world;
-			this.contactPoint = contactPoint;
-			this.contactPointNormal = contactPointNormal;
-			UpdateBasis();
-		}
+		private Basis animationEnd;
 
-		private void UpdateBasis()
-		{
-			var up = this.world.GetAverageNormal(this.contactPoint, this.contactPointNormal);
-			this.Position.Origin = this.contactPoint + up * 0.5f;
-			var x = this.Position.X;
-			var y = Vector3.Cross(up, x);
-			x = Vector3.Cross(y, up);
-			this.Position.SetRotation(x,up);
-		}
+		private float animationProgress;
 
-		private Basis position = new Basis();
+		private Basis animationStart;
+
+		private Vector3 contactPointNormal = new Vector3(0, 0, 1);
+
+		private bool isAimated;
 
 		private float pitch;
 
-		private Vector3 contactPoint;
+		private Basis position = new Basis();
 
-		private Vector3 contactPointNormal;
+		private float speed = 3.0f;
 
-		public Basis Position
+		#endregion
+
+		#region Constructors and Destructors
+
+		public Spider(World world, Vector3 startPosition)
+		{
+			this.world = world;
+			this.position.Origin = startPosition;
+			this.UpdateBasis();
+		}
+
+		#endregion
+
+		#region Public Properties
+
+		public Vector3 LookDirection
 		{
 			get
 			{
-				return this.position;
-			}
-			set
-			{
-				this.position = value;
+				var b = this.Position.Clone();
+				b.Rotate(b.Y, this.Pitch);
+				return b.X;
 			}
 		}
 
@@ -59,124 +65,136 @@ namespace Game.Model
 			}
 		}
 
-		private bool isAimated = false;
-
-		public void Update(TimeSpan dt)
+		public Basis Position
 		{
-			
+			get
+			{
+				return this.position;
+			}
+			private set
+			{
+				this.position = value;
+			}
 		}
+
+		#endregion
+
+		#region Public Methods and Operators
 
 		public void Move(Vector3 direction, float stepScale)
 		{
-			if (isAimated)
+			if (this.isAimated)
+			{
 				return;
+			}
 			if (stepScale == 0)
+			{
 				return;
+			}
 			if (stepScale < 0)
 			{
 				direction = -direction;
 				stepScale = -stepScale;
 			}
-
+			stepScale *= this.speed;
 			// calculate direction in wold coordinates
-			direction = (Position.X * direction.X + Position.Y * direction.Y + Position.Z * direction.Z);
+			direction = (this.Position.X * direction.X + this.Position.Y * direction.Y + this.Position.Z * direction.Z);
 
 			// calculate direction according to cuurent contact normal
-			direction = direction - contactPointNormal * Vector3.Dot(direction, contactPointNormal);
+			direction = direction - this.contactPointNormal * Vector3.Dot(direction, this.contactPointNormal);
 			direction.Normalize();
 
+			var prevPos = this.Position.Origin;
+			var newPos = prevPos + direction * stepScale;
 
-			var newContact = contactPoint + direction * stepScale;
-			// check if we got into wall
-			if (!world.IsEmpty(newContact+contactPointNormal*0.5f))
+			Vector3 n;
+			if (this.world.TraceBox(prevPos, ref newPos, out n))
 			{
+				this.StartAnimation(newPos, n);
 				return;
 			}
-				//check if there is no "ground" beneath
-			else if (world.IsEmpty(newContact - contactPointNormal * 0.5f))
+			prevPos = newPos;
+			newPos = prevPos - this.contactPointNormal * 0.5f;
+			if (!this.world.TraceBox(prevPos, ref newPos, out n))
 			{
+				prevPos = newPos;
+				newPos = prevPos - direction;
+				if (this.world.TraceBox(prevPos, ref newPos, out n))
+				{
+					this.StartAnimation(newPos, n);
+				}
 				return;
 			}
-			contactPoint = newContact;
-			this.UpdateBasis();
-			return;
-
-
-			//var n = world.GetAverageNormal(contactPoint, contactPointNormal);
-			//var r = Vector3.Cross(n,direction);
-			//var f = Vector3.Cross(r, n);
-			//f.Normalize();
-
-			//Debug.WriteLine("forward: " + f);
-			//Debug.WriteLine("normal: " + n);
-
-			//var pos = contactPoint + n * 0.5f + f * stepScale;
-			//Vector3 newC;
-			//Vector3 newN;
-			//if (!world.TraceRay(pos,pos-n*2.0f,out newC,out newN))
-			//	return;
-			//if (float.IsNaN(newC.X) || float.IsNaN(newN.X))
-			//{
-			//	return;
-			//}
-			//this.contactPoint = newC;
-			//this.contactPointNormal = newN;
-			//this.UpdateBasis();
-			//return;
-
-
-			//direction = direction - contactPointNormal * Vector3.Dot(direction, contactPointNormal);
-			//direction.Normalize();
-			//float eps = 1e-6f;
-			//if (direction.X > -eps && direction.X < eps) direction.X = 0;
-			//if (direction.Y > -eps && direction.Y < eps) direction.Y = 0;
-			//if (direction.Z > -eps && direction.Z < eps) direction.Z = 0;
-			//direction.Normalize();
-
-			////Position.Origin += direction*stepScale;
-			//var center = contactPoint + contactPointNormal * 0.5f;
-			//var x = (int)Math.Floor(center.X);
-			//var y = (int)Math.Floor(center.Y);
-			//var z = (int)Math.Floor(center.Z);
-
-			////float maxStepScale = stepScale;
-
-			////if (direction.X > eps)
-			////{
-			////}
-			////else if (direction.X < eps)
-			////{
-
-			////}
-
-			//var newContact = contactPoint + direction * stepScale;
-
-			//contactPoint = newContact;
-
-			//UpdateBasis();
+			this.Position.Origin = prevPos;
 		}
 
 		public void Rotate(float angle)
 		{
-			Position.Rotate(Position.Z, angle);
+			if (this.isAimated)
+			{
+				return;
+			}
+			this.Position.Rotate(this.Position.Z, angle);
 		}
 
-		public Vector3 LookDirection
+		public void Update(TimeSpan dt)
 		{
-			get
+			if (this.isAimated)
 			{
-				var b = this.Position.Clone();
-				b.Rotate(b.Y, Pitch);
-				return b.X;
+				this.animationProgress = (float)Math.Min(1, this.animationProgress + dt.TotalSeconds * this.speed);
+				var kStart = (1 - this.animationProgress);
+				var kEnd = (this.animationProgress);
+				this.Position.Origin = this.animationStart.Origin * kStart + this.animationEnd.Origin * kEnd;
+				var n = this.animationStart.Z * kStart + this.animationEnd.Z * kEnd;
+
+				var x = Vector3.Cross(this.Position.Y, n);
+				if (float.IsNaN(x.X) || x.LengthSquared <= 1e-6)
+				{
+					var y = Vector3.Cross(n, this.Position.X);
+					x = Vector3.Cross(y, n);
+				}
+
+				this.Position.SetRotation(x, n);
+				if (this.animationProgress >= 1.0f)
+				{
+					this.contactPointNormal = this.animationEnd.Z;
+					this.isAimated = false;
+				}
 			}
 		}
 
-		private const float MaxPitch = 1;
+		#endregion
 
-		public void Spawn(Vector3 contactPoint, Vector3 contactPointNormal)
+		#region Methods
+
+		private bool StartAnimation(Vector3 newPos, Vector3 n)
 		{
-			this.contactPoint = contactPoint;
-			this.contactPointNormal = contactPointNormal;
+			var animateToPos = newPos + n * 0.5f;
+			animateToPos.X = 0.5f + (float)Math.Floor(animateToPos.X);
+			animateToPos.Y = 0.5f + (float)Math.Floor(animateToPos.Y);
+			animateToPos.Z = 0.5f + (float)Math.Floor(animateToPos.Z);
+
+			this.animationStart = this.Position.Clone();
+			var x = Vector3.Cross(this.Position.Y, n);
+			if (float.IsNaN(x.X) || x.LengthSquared <= 1e-6)
+			{
+				var y= Vector3.Cross(n, this.Position.X);
+				x = Vector3.Cross(y, n);
+			}
+			this.animationEnd = new Basis(animateToPos, x.Normalized(), n);
+			this.animationProgress = 0;
+			if (!this.world.IsEmpty(animateToPos))
+			{
+				return true;
+			}
+			this.isAimated = true;
+			return false;
 		}
+
+		private void UpdateBasis()
+		{
+		}
+
+		#endregion
 	}
 }

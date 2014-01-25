@@ -34,7 +34,7 @@ namespace Game.Model
 			}
 			while (!world.TraceRay(point, point - new Vector3(0,0,1) * 10.0f, out contactPoint, out contactPointNormal));
 
-			this.spider = new SimpleSpider(this.world, contactPoint + contactPointNormal*0.5f);
+			this.spider = new Spider(this.world, contactPoint + contactPointNormal*0.5f);
 			
 			this.controller = new WasdController(this.spider);
 		}

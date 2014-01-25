@@ -26,6 +26,18 @@ namespace Game.Model
 			y.Normalize();
 			z = Vector3.Cross(x, y);
 			z.Normalize();
+			if (float.IsNaN(x.X) || float.IsNaN(y.X) || float.IsNaN(z.X))
+			{
+				ResetRotOnError();
+				return;
+			}
+		}
+
+		private void ResetRotOnError()
+		{
+				x = new Vector3(1,0,0);
+			y = new Vector3(0,1,0);
+			z = new Vector3(0,0,1);
 		}
 
 		public Vector3 Origin
@@ -80,6 +92,11 @@ namespace Game.Model
 			y = Vector3.Transform(y, q);
 			z = Vector3.Cross(x,y);
 			z.Normalize();
+			if (float.IsNaN(x.X) || float.IsNaN(y.X) || float.IsNaN(z.X))
+			{
+				ResetRotOnError();
+				return;
+			}
 		}
 
 		public Basis Clone()

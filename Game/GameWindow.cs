@@ -37,10 +37,64 @@ namespace Game
 		    var voxelArray = new VoxelArray(32, 32, 32);
 			voxelArray.OutlineBox(1,0,0,0,31,31,31);
 		    this.scene = new GameScene(new World(voxelArray, materialMap ));
-
+            this.BringToFront();
+            this.Focus();
+            this.KeyPreview = true;
         }
 
-		private static Bitmap LoadTexture(string s1)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch(keyData)
+            {
+                case Keys.Left:
+                case Keys.A:
+                    this.TurnLeft();
+                    return true;
+                    break;
+                case Keys.Right:
+                case Keys.D:
+                    this.TurnRight();
+                    return true;
+                    break;
+                case Keys.Up:
+                case Keys.W:
+                    this.GoForward();
+                    return true;
+                    break;
+                case Keys.Down:
+                case Keys.S:
+                    this.GoBack();
+                    return true;
+                    break;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+                break;
+            }
+           // etc..
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void GoBack()
+        {
+//
+        }
+
+        private void GoForward()
+        {
+//
+        }
+
+        private void TurnRight()
+        {
+//
+        }
+
+        private void TurnLeft()
+        {
+//
+        }
+
+        private static Bitmap LoadTexture(string s1)
 	    {
 			using (var s = typeof(GameWindow).Assembly.GetManifestResourceStream("Game.Textures." + s1 + ".jpg"))
 		    {

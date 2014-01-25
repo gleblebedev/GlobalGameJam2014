@@ -52,6 +52,12 @@ namespace Game.Model
 		{
 			this.FillBox(type, minX, minY, minZ, minX, maxY, maxZ);
 			this.FillBox(type, maxX, minY, minZ, maxX, maxY, maxZ);
+
+			this.FillBox(type, minX, minY, minZ, maxX, minY, maxZ);
+			this.FillBox(type, minX, maxY, minZ, maxX, maxY, maxZ);
+
+			this.FillBox(type, minX, minY, minZ, maxX, maxY, minZ);
+			this.FillBox(type, minX, minY, maxZ, maxX, maxY, maxZ);
 		}
 
 		public int this[int x, int y, int z]

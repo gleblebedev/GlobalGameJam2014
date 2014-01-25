@@ -68,6 +68,11 @@ namespace Game.Model
 			{
 				worldMaterial.Texture.Set(0);
 			}
+			else
+			{
+				GL.Disable(EnableCap.Texture2D);
+			}
+			
 			GL.Begin(PrimitiveType.Quads);
 
 			GL.Color4(worldMaterial.Color);

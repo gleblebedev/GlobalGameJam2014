@@ -35,7 +35,7 @@ namespace Game.Model
 			while (!world.TraceRay(point, point - new Vector3(0,0,1) * 10.0f, out contactPoint, out contactPointNormal));
 
 			this.spider = new Spider(this.world, contactPoint + contactPointNormal*0.5f);
-			
+		    this.fly = new Fly(this.world);
 			this.controller = new WasdController(this.spider);
 		}
 
@@ -59,7 +59,9 @@ namespace Game.Model
 		private bool hasBlockPos;
 		Vector3 newBlockPoint;
 		Vector3 newBlockNormal;
-		#region Implementation of IScene
+	    private Fly fly;
+
+	    #region Implementation of IScene
 
 		public void Render(int width, int height)
 		{
@@ -78,10 +80,17 @@ namespace Game.Model
 		public void Update(TimeSpan dt)
 		{
 			spider.Update(dt);
+            fly.Update(dt);
+		    this.CheckCollision(this.fly, this.spider);
 			controller.Update(dt);
 		}
 
-		public void OnKeyDown(KeyEventArgs keyEventArgs)
+	    private void CheckCollision(Fly fly1, IControlledCreature controlledCreature)
+	    {
+
+	    }
+
+	    public void OnKeyDown(KeyEventArgs keyEventArgs)
 		{
 			controller.OnKeyDown(keyEventArgs);
 		}

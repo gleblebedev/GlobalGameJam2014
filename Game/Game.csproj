@@ -61,6 +61,8 @@
     <Compile Include="GameWindow.Designer.cs">
       <DependentUpon>GameWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\ArrowsController.cs" />
+    <Compile Include="Model\BaseController.cs" />
     <Compile Include="Model\BaseViewportController.cs" />
     <Compile Include="Model\Basis.cs" />
     <Compile Include="Model\ControlType.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Model\IScene.cs" />
     <Compile Include="Model\IViewports.cs" />
     <Compile Include="Model\MaterialMap.cs" />
+    <Compile Include="Model\PlayerData.cs" />
     <Compile Include="Model\PlayerOptions.cs" />
     <Compile Include="Model\Spider.cs" />
     <Compile Include="Model\SingleScreen.cs" />

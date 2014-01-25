@@ -12,15 +12,11 @@ namespace Game.Model
 	{
 		private readonly World world;
 
-		private IViewports viewport;
 
-		private SpiderScreen viewport2;
-
-		private IControlledCreature spider;
 
 		private float a = 0.0f;
 
-		private IController controller;
+		
 
 		private IList<PlayerData> players;
 		public GameScene(World world, GameOptions options)
@@ -32,21 +28,43 @@ namespace Game.Model
 			{
 				if (player.Control != ControlType.None)
 				{
+					var playerData = new PlayerData() { Viewport = new SpiderScreen() { NumberOfEyes = (int)player.Eyes }, Creature = new Spider(world, this.Spawn(world)) };
+					playerData.Controller = this.CreateController(player.Control,playerData.Creature);
+					players.Add(playerData);
 				}
 			}
+		}
 
-			this.viewport = new SingleScreen();
-			this.viewport2 = new SpiderScreen();
-			Vector3 contactPoint, contactPointNormal,point;
+		private IController CreateController(ControlType control, IControlledCreature creature)
+		{
+			switch (control)
+			{
+				case ControlType.None:
+					return null;
+					break;
+				case ControlType.WASD:
+					return new WasdController(creature);
+				case ControlType.Arrows:
+					return new ArrowsController(creature);
+				case ControlType.Gamepad1:
+					return new WasdController(creature);
+				case ControlType.Gamepad2:
+					return new WasdController(creature);
+				default:
+					throw new ArgumentOutOfRangeException("control");
+			}
+		}
+
+		private Vector3 Spawn(World world)
+		{
+			Vector3 point;
+			Vector3 contactPoint, contactPointNormal;
 			do
 			{
-				point = GetSpawnPoint();
+				point = this.GetSpawnPoint();
 			}
-			while (!world.TraceRay(point, point - new Vector3(0,0,1) * 10.0f, out contactPoint, out contactPointNormal));
-
-			this.spider = new Spider(this.world, contactPoint + contactPointNormal*0.5f);
-			
-			this.controller = new WasdController(this.spider);
+			while (!world.TraceRay(point, point - new Vector3(0, 0, 1) * 10.0f, out contactPoint, out contactPointNormal));
+			return contactPoint + contactPointNormal * 0.5f;
 		}
 
 		private Vector3 GetSpawnPoint()
@@ -70,36 +88,47 @@ namespace Game.Model
 
 		public void Render(int width, int height)
 		{
-			
-
-			viewport.Position = spider.Position;
-			viewport.Pitch = spider.Pitch;
-			viewport.Render(0, 0, width, height / 2, RenderImpl);
-
-			viewport2.Position = spider.Position;
-			viewport2.Pitch = spider.Pitch;
-			viewport2.Render(0, height / 2, width, height, RenderImpl);
+			var yStep = height / players.Count;
+			for (int index = 0; index < this.players.Count; index++)
+			{
+				var playerData = this.players[index];
+				playerData.Viewport.Position = playerData.Creature.Position;
+				playerData.Viewport.Pitch = playerData.Creature.Pitch;
+				playerData.Viewport.Render(0, yStep * index,width, yStep*(index+1), this.RenderImpl);
+			}
 		}
 
 		public void Update(TimeSpan dt)
 		{
-			spider.Update(dt);
-			controller.Update(dt);
+			foreach (var playerData in players)
+			{
+				playerData.Creature.Update(dt);
+				playerData.Controller.Update(dt);
+			}
 		}
 
 		public void OnKeyDown(KeyEventArgs keyEventArgs)
 		{
-			controller.OnKeyDown(keyEventArgs);
+			foreach (var playerData in players)
+			{
+				playerData.Controller.OnKeyDown(keyEventArgs);
+			}
 		}
 
 		public void OnKeyUp(KeyEventArgs keyEventArgs)
 		{
-			controller.OnKeyUp(keyEventArgs);
+			foreach (var playerData in players)
+			{
+				playerData.Controller.OnKeyUp(keyEventArgs);
+			}
 		}
 
 		public void OnMouseMove(MouseEventArgs mouseEventArgs)
 		{
-			controller.OnMouseMove(mouseEventArgs);
+			foreach (var playerData in players)
+			{
+				playerData.Controller.OnMouseMove(mouseEventArgs);
+			}
 		}
 
 		private void RenderImpl()

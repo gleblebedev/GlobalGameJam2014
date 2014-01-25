@@ -8,6 +8,19 @@ namespace Game.Model
 	{
 		public float Pitch { get; set; }
 
+		public int NumberOfEyes
+		{
+			get
+			{
+				return this.numberOfEyes;
+			}
+			set
+			{
+				this.numberOfEyes = value;
+			}
+		}
+
+		private int numberOfEyes = 8;
 	
 
 		public void Render(int minX, int minY, int maxX, int maxY, Action renderCallback)
@@ -21,8 +34,7 @@ namespace Game.Model
 			var pi = (float)Math.PI;
 
 
-		    var numberOfEyes = 8;
-		    var step = width / numberOfEyes;
+		    var step = width / this.NumberOfEyes;
 			var maxheight = step * 1.5f;
 			if (maxheight < height)
 			{
@@ -30,12 +42,12 @@ namespace Game.Model
 				minY = (int)(center - maxheight / 2);
 				height = (int)(maxheight);
 			}
-			for (int index = 0; index < numberOfEyes; ++index)
+			for (int index = 0; index < this.NumberOfEyes; ++index)
 			{
 				Vector3 f;
 				Vector3 r;
 				var fovx = pi / 4.0f;
-				var wholeArea = numberOfEyes * fovx;
+				var wholeArea = this.NumberOfEyes * fovx;
 				var offset = - wholeArea * 0.5f + fovx*0.5f;
 				var a = - (index * fovx + offset);
 

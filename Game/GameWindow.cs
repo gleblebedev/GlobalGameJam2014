@@ -28,8 +28,12 @@ namespace Game
 		#endregion
 
 		#region Constructors and Destructors
+		public GameWindow():this(new GameOptions())
+		{
+			
+		}
 
-		public GameWindow()
+		public GameWindow(GameOptions options)
 		{
 			this.InitializeComponent();
 
@@ -55,7 +59,7 @@ namespace Game
 			}
 
 			var world = new World(voxelArray, this.materialMap);
-			this.gameScene = this.scene = new GameScene(world);
+			this.gameScene = this.scene = new GameScene(world, options);
 			this.editorScene = new EditorScene(world);
 			this.BringToFront();
 			this.Focus();

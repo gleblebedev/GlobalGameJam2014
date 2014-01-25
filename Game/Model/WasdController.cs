@@ -1,32 +1,16 @@
-using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-using OpenTK;
-
 namespace Game.Model
 {
-	public class WasdController : IController
+	public class WasdController :BaseController, IController
 	{
-		private readonly IControlledCreature spider;
-
-		private bool left;
-
-		private bool right;
-
-		private bool forward;
-
-		private bool backward;
 
 		private Point? mouseLocation;
 
-		private bool trunLeft;
 
-		private bool trunRight;
-
-		public WasdController(IControlledCreature spider)
+		public WasdController(IControlledCreature spider):base(spider)
 		{
-			this.spider = spider;
 		}
 
 		public void OnKeyDown(KeyEventArgs keyEventArgs)
@@ -91,34 +75,7 @@ namespace Game.Model
 			}
 		}
 
-		public void Update(TimeSpan dt)
-		{
-			var scale = (float)dt.TotalSeconds;
-			if (trunLeft && !trunRight)
-			{
-				spider.Rotate(scale);
-			}
-			if (!trunLeft && trunRight)
-			{
-				spider.Rotate(-scale);
-			}
-			if (left && !right)
-			{
-				spider.Move(new Vector3(0,1,0), scale);
-			}
-			if (!left && right)
-			{
-				spider.Move(new Vector3(0, -1, 0), scale);
-			}
-			if (forward && !backward)
-			{
-				spider.Move(new Vector3(1, 0, 0.3f), scale);
-			}
-			if (!forward && backward)
-			{
-				spider.Move(new Vector3(-1, 0, 0), scale);
-			}
-		}
+		
 
 		public void OnMouseMove(MouseEventArgs mouseEventArgs)
 		{
@@ -132,7 +89,7 @@ namespace Game.Model
 						spider.Pitch -= dy*0.002f;
 					if (dx != 0)
 					{
-						spider.Position.Rotate(spider.Position.Z, dx * 0.002f);
+						spider.Rotate(dx * 0.002f);
 					}
 				}
 			}

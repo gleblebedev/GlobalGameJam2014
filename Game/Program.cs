@@ -34,7 +34,7 @@ namespace Game
 			if (s.DialogResult == DialogResult.OK)
 			{
 	
-				var gameWindow = new GameWindow();
+				var gameWindow = new GameWindow(options);
 				Application.Idle += (sender, e) =>
 					{ gameWindow.UpdateGame(); };
 				Application.Run(gameWindow);

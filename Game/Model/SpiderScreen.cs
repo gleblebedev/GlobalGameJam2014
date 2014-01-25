@@ -18,7 +18,8 @@ namespace Game.Model
 			var pi = (float)Math.PI;
 
 
-			var step = width / 8;
+		    var numberOfEyes = 2;
+		    var step = width / numberOfEyes;
 			var maxheight = step * 1.5f;
 			if (maxheight < height)
 			{
@@ -26,13 +27,13 @@ namespace Game.Model
 				minY = (int)(center - maxheight / 2);
 				height = (int)(maxheight);
 			}
-			for (int index = 0; index < 8; ++index)
+			for (int index = 0; index < numberOfEyes; ++index)
 			{
 				Vector3 f;
 				Vector3 r;
 				var fovx = pi / 4.0f;
 				var a = (-1 + fovx/2.0f + index * fovx);
-				this.Rotate(forward,right,a,out f,out  r);
+				this.Rotate(forward, right, a, out f, out  r);
 				this.SetViewport(minX + index * step, minY,  step, height, fovx, f, up);
 				renderCallback();
 			}

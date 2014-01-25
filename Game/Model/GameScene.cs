@@ -107,6 +107,19 @@ namespace Game.Model
 			}
 		}
 
+	    private void CheckCollision(Fly fly1, IControlledCreature player)
+	    {
+            var lentgh = Math.Sqrt(Math.Pow(fly1.Position.Origin.X - player.Position.Origin.X, 2) +
+                      Math.Pow(fly1.Position.Origin.Y - player.Position.Origin.Y, 2) +
+                      Math.Pow(fly1.Position.Origin.Z - player.Position.Origin.Z, 2));
+
+	        double someMagicValue = 5;
+	        if (lentgh < someMagicValue)
+            {
+                //Мы выиграли
+            }
+
+	    }
 		public void OnKeyDown(KeyEventArgs keyEventArgs)
 		{
 			foreach (var playerData in players)

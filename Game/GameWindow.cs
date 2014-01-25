@@ -43,29 +43,10 @@ namespace Game
 			this.materialMap[2] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("grass")) };
 			this.materialMap[3] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("wood")) };
 			this.materialMap[4] = new WorldMaterial { Color = Color4.Blue };
-			var voxelArray = new VoxelArray(32, 32, 32);
 
-			voxelArray.OutlineBox(1, 0, 0, 0, 31, 31, 31);
-			for (int i = 0; i < 100; ++i)
-			{
-				int size = this.rnd.Next(3);
-				var index = this.rnd.Next(voxelArray.SizeX * voxelArray.SizeY * voxelArray.SizeZ);
-				var x = index % voxelArray.SizeX;
-				index /= voxelArray.SizeX;
-				var y = index % voxelArray.SizeY;
-				index /= voxelArray.SizeY;
-				var z = index % voxelArray.SizeZ;
-				voxelArray.FillBox((byte)(this.rnd.Next(3) + 2), x, y, z, x + size, y + size, z + size);
-			}
-
-			var world = new World(voxelArray, this.materialMap);
-<<<<<<< HEAD
+			var world = new World(options.VoxelArray, this.materialMap);
 			this.gameScene = this.scene = new GameScene(world, options);
-=======
-		    var gameOptions = new GameOptions();
-			this.gameScene = this.scene = new GameScene(world, gameOptions);
->>>>>>> 2e3de1d51421b5a1ca3bedb4aca45b60a7f02127
-			this.editorScene = new EditorScene(world);
+			this.editorScene = new EditorScene(world,options.VoxelArray);
 			this.BringToFront();
 			this.Focus();
 			this.KeyPreview = true;

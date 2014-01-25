@@ -28,6 +28,7 @@ namespace Game.Model
 			GL.DisableClientState(ArrayCap.VertexArray);
 			GL.DisableClientState(ArrayCap.ColorArray);
 			GL.DisableClientState(ArrayCap.TextureCoordArray);
+			GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 		}
 		public void Enable()
 		{
@@ -39,6 +40,15 @@ namespace Game.Model
 			GL.VertexPointer(3, VertexPointerType.Float, VertexBufferItem.stride, new IntPtr(0));
 			GL.ColorPointer(4, ColorPointerType.Float, VertexBufferItem.stride, new IntPtr(4*3));
 			GL.TexCoordPointer(2, TexCoordPointerType.Float, VertexBufferItem.stride, new IntPtr(4*(3+4)));
+		}
+
+		public void Dispose()
+		{
+			if (buffer != 0)
+			{
+				this.Disable();
+				GL.DeleteBuffer(buffer);
+			}
 		}
 	}
 }

@@ -18,6 +18,8 @@ namespace Game.Model
 
 		private List<VertexBuffer> vbs;
 
+		private int voxelVersion = -1;
+
 		public World(VoxelArray voxels,MaterialMap materialMap)
 		{
 			this.voxels = voxels;
@@ -104,8 +106,17 @@ namespace Game.Model
 
 		private void EnsureVertexBuffers()
 		{
-			if (vbs != null)
+			if (voxelVersion == voxels.Version && vbs != null)
 				return;
+			if (vbs != null)
+			{
+				foreach (var vertexBuffer in vbs)
+				{
+					vertexBuffer.Dispose();
+				}
+				vbs = null;
+			}
+			voxelVersion = voxels.Version;
 			Vector2[] quadUv = new Vector2[]
 				{
 					new Vector2(0, 0),

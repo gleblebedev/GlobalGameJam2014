@@ -35,9 +35,7 @@ namespace Game.Model
 
 		private void ResetRotOnError()
 		{
-				x = new Vector3(1,0,0);
-			y = new Vector3(0,1,0);
-			z = new Vector3(0,0,1);
+			ResetRotation();
 		}
 
 		public Vector3 Origin
@@ -112,6 +110,13 @@ namespace Game.Model
 			this.y.Normalize();
 			this.z = Vector3.Cross(x, y);
 			this.z.Normalize();
+		}
+
+		public void ResetRotation()
+		{
+			x = new Vector3(1, 0, 0);
+			y = new Vector3(0, 1, 0);
+			z = new Vector3(0, 0, 1);
 		}
 	}
 }

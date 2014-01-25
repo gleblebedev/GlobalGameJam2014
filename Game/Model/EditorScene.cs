@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 using OpenTK;
@@ -15,20 +16,37 @@ namespace Game.Model
 
 		private readonly World world;
 
+		private readonly VoxelArray voxelArray;
+
 		private bool hasBlockPos;
 
 		private Vector3 newBlockNormal;
 
 		private Vector3 newBlockPoint;
 
+		private bool left;
+
+		private bool right;
+
+		private bool trunLeft;
+
+		private bool trunRight;
+
+		private bool forward;
+
+		private bool backward;
+
 		#endregion
 
 		#region Constructors and Destructors
 
-		public EditorScene(World world)
+		public EditorScene(World world, VoxelArray voxelArray)
 		{
 			this.world = world;
-			this.viewport = new SingleScreen();
+			this.voxelArray = voxelArray;
+			this.viewport = new SingleScreen() { };
+			this.viewport.Position.Origin = new Vector3(this.world.SizeX * 0.5f, this.world.SizeY * 0.5f, this.world.SizeZ * 0.5f);
+			this.viewport.Position.ResetRotation();
 		}
 
 		#endregion
@@ -37,21 +55,137 @@ namespace Game.Model
 
 		public void OnKeyDown(KeyEventArgs keyEventArgs)
 		{
+			switch (keyEventArgs.KeyCode)
+			{
+				case Keys.A:
+					this.left = true;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.D:
+					this.right = true;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.C:
+					this.down = true;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.E:
+					this.up = true;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.W:
+					this.forward = true;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.S:
+					this.backward = true;
+					keyEventArgs.Handled = true;
+					break;
+			}
 		}
 
 		public void OnKeyUp(KeyEventArgs keyEventArgs)
 		{
+			switch (keyEventArgs.KeyCode)
+			{
+				case Keys.A:
+					this.left = false;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.D:
+					this.right = false;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.C:
+					this.down = false;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.E:
+					this.up = false;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.W:
+					this.forward = false;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.S:
+					this.backward = false;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.Space:
+					RemoveElement();
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.NumPad1:
+					SetElement(1);
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.NumPad2:
+					SetElement(2);
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.NumPad3:
+					SetElement(3);
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.NumPad4:
+					SetElement(4);
+					keyEventArgs.Handled = true;
+					break;
+			}
 		}
+
+		private void SetElement(byte i)
+		{
+			if (!this.hasBlockPos)
+				return;
+			var center = newBlockPoint + newBlockNormal * 0.5f;
+			var x = (int)Math.Floor(center.X);
+			var y = (int)Math.Floor(center.Y);
+			var z = (int)Math.Floor(center.Z);
+			voxelArray.FillBox(i, x, y, z, x, y, z);
+		}
+
+		private void RemoveElement()
+		{
+			if (!this.hasBlockPos)
+				return;
+			var center = newBlockPoint - newBlockNormal * 0.5f;
+			var x = (int)Math.Floor(center.X);
+			var y = (int)Math.Floor(center.Y);
+			var z = (int)Math.Floor(center.Z);
+			voxelArray.FillBox(0,x,y,z,x,y,z);
+		}
+
+		private Point? mouseLocation;
+
+		private bool down;
+
+		private bool up;
 
 		public void OnMouseMove(MouseEventArgs mouseEventArgs)
 		{
+			if (mouseLocation != null)
+			{
+				if ((mouseEventArgs.Button & MouseButtons.Left) == MouseButtons.Left)
+				{
+					var dy = mouseEventArgs.Location.Y - mouseLocation.Value.Y;
+					var dx = mouseEventArgs.Location.X - mouseLocation.Value.X;
+					if (dy != 0)
+						viewport.Pitch -= dy * 0.002f;
+					if (dx != 0)
+					{
+						viewport.Position.Rotate(viewport.Position.Z,dx * 0.002f);
+					}
+				}
+			}
+			this.mouseLocation = mouseEventArgs.Location;
 		}
-
 		public void Render(int width, int height)
 		{
 			this.hasBlockPos = this.world.TraceRay(
 				this.viewport.Position.Origin,
-				this.viewport.Position.Origin + this.viewport.LookDirection * 10.0f,
+				this.viewport.Position.Origin + this.viewport.LookDirection * 20.0f,
 				out this.newBlockPoint,
 				out this.newBlockNormal);
 			this.viewport.Render(0, 0, width, height, this.RenderImpl);
@@ -59,6 +193,39 @@ namespace Game.Model
 
 		public void Update(TimeSpan dt)
 		{
+			var scale = (float)dt.TotalSeconds;
+			if (this.trunLeft && !this.trunRight)
+			{
+				this.viewport.Position.Rotate(this.viewport.Position.Z, scale);
+			}
+			if (!this.trunLeft && this.trunRight)
+			{
+				this.viewport.Position.Rotate(this.viewport.Position.Z, -scale);
+			}
+			if (this.up && !this.down)
+			{
+				this.viewport.Position.Origin += this.viewport.Position.Z * scale * 5.0f;
+			}
+			if (!this.up && this.down)
+			{
+				this.viewport.Position.Origin -= this.viewport.Position.Z * scale * 5.0f;
+			}
+			if (this.left && !this.right)
+			{
+				this.viewport.Position.Origin += this.viewport.Position.Y* scale*5.0f;
+			}
+			if (!this.left && this.right)
+			{
+				this.viewport.Position.Origin -= this.viewport.Position.Y * scale * 5.0f;
+			}
+			if (this.forward && !this.backward)
+			{
+				this.viewport.Position.Origin += this.viewport.Position.X * scale * 5.0f;
+			}
+			if (!this.forward && this.backward)
+			{
+				this.viewport.Position.Origin -= this.viewport.Position.X * scale * 5.0f;
+			}
 		}
 
 		#endregion

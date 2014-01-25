@@ -25,7 +25,8 @@ namespace Game.Model
 			writer.WritePropertyName("SizeZ");
 			serializer.Serialize(writer, array.SizeZ);
 			writer.WritePropertyName("Data");
-			serializer.Serialize(writer, array.ToArray());
+			var bytes = array.ToArray();
+			serializer.Serialize(writer, bytes);
 			writer.WriteEndObject();
 		}
 
@@ -41,10 +42,20 @@ namespace Game.Model
 			JObject jsonObject = JObject.Load(reader);
 			var properties = jsonObject.Properties().ToList();
 			var sizex = (int)properties.First(x => x.Name == "SizeX");
-			return new VoxelArray(
-				sizex,
-				(int)properties.First(x => x.Name == "SizeY").Value,
-				(int)properties.First(x => x.Name == "SizeZ").Value);
+			var sizeY = (int)properties.First(x => x.Name == "SizeY").Value;
+			var sizeZ = (int)properties.First(x => x.Name == "SizeZ").Value;
+			var Data = properties.First(x => x.Name == "Data");
+			var voxelArray = new VoxelArray(sizex, sizeY, sizeZ);
+			var v = (byte[])Data.Value;
+			int index = 0;
+			for (int x = 0; x < sizex; x++)
+				for (int y = 0; y < sizeY; y++)
+					for (int z = 0; z < sizeZ; z++)
+					{
+						voxelArray.FillBox(v[index],x,y,z,x,y,z);
+						++index;
+					}
+			return voxelArray;
 		}
 
 		/// <summary>

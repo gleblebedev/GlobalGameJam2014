@@ -25,15 +25,19 @@ namespace Game
 			this.options = options;
 			InitializeComponent();
 			playerOptions1.PlayerIndex = 0;
-			playerOptions1.Control = ControlType.WASD;
-			playerOptions1.Eyes = EyesCount.Spider;
-			playerOptions2.PlayerIndex = 0;
-			playerOptions2.Control = ControlType.Gamepad2;
-			playerOptions2.Eyes = EyesCount.OneEye;
+			playerOptions1.Control = options.Players[0].Control;
+			playerOptions1.Eyes = options.Players[0].Eyes;
+			playerOptions2.PlayerIndex = 1;
+			playerOptions2.Control = options.Players[1].Control;
+			playerOptions2.Eyes = options.Players[1].Eyes;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
+			options.Players[0].Control = playerOptions1.Control;
+			options.Players[0].Eyes = playerOptions1.Eyes;
+			options.Players[1].Control = playerOptions2.Control;
+			options.Players[1].Eyes = playerOptions2.Eyes;
 			DialogResult = DialogResult.OK;
 			this.Close();
 		}

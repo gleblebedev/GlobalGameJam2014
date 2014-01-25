@@ -1,7 +1,10 @@
 using System;
 
+using Newtonsoft.Json;
+
 namespace Game.Model
 {
+	[JsonConverter(typeof(VoxelArrayJsonConverter))]
 	public class VoxelArray
 	{
 		private readonly int sizeX;
@@ -75,6 +78,11 @@ namespace Game.Model
 					Math.Max(0,Math.Min(z,sizeZ-1))
 					];
 			}
+		}
+
+		public byte[,,] ToArray()
+		{
+			return this.data;
 		}
 	}
 }

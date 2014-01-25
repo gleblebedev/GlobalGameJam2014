@@ -20,6 +20,10 @@ namespace Game.Model
 
 		private Point? mouseLocation;
 
+		private bool trunLeft;
+
+		private bool trunRight;
+
 		public WasdController(IControlledCreature spider)
 		{
 			this.spider = spider;
@@ -35,6 +39,14 @@ namespace Game.Model
 					break;
 				case Keys.D:
 					this.right = true;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.Q:
+					this.trunLeft = true;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.E:
+					this.trunRight = true;
 					keyEventArgs.Handled = true;
 					break;
 				case Keys.W:
@@ -60,6 +72,14 @@ namespace Game.Model
 					this.right = false;
 					keyEventArgs.Handled = true;
 					break;
+				case Keys.Q:
+					this.trunLeft = false;
+					keyEventArgs.Handled = true;
+					break;
+				case Keys.E:
+					this.trunRight = false;
+					keyEventArgs.Handled = true;
+					break;
 				case Keys.W:
 					this.forward = false;
 					keyEventArgs.Handled = true;
@@ -74,13 +94,21 @@ namespace Game.Model
 		public void Update(TimeSpan dt)
 		{
 			var scale = (float)dt.TotalSeconds;
-			if (left && !right)
+			if (trunLeft && !trunRight)
 			{
 				spider.Position.Rotate(spider.Position.Z, scale);
 			}
-			if (!left && right)
+			if (!trunLeft && trunRight)
 			{
 				spider.Position.Rotate(spider.Position.Z, -scale);
+			}
+			if (left && !right)
+			{
+				spider.Position.Origin += spider.Position.Y * scale;
+			}
+			if (!left && right)
+			{
+				spider.Position.Origin -= spider.Position.Y * scale;
 			}
 			if (forward && !backward)
 			{

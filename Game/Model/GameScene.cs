@@ -34,11 +34,11 @@ namespace Game.Model
 		#region Implementation of IScene
 
 		public void Render(int width, int height)
-		{
-			
+		{		
+
 			viewport.Position = spider.Position;
 			viewport.Pitch = spider.Pitch;
-			viewport.Render(0,0,width,height/2,RenderImpl);
+			viewport.Render(0, 0, width, height / 2, RenderImpl);
 
 			viewport2.Position = spider.Position;
 			viewport2.Pitch = spider.Pitch;

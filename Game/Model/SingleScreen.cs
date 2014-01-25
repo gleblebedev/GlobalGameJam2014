@@ -12,7 +12,7 @@ namespace Game.Model
 		{
 			var basis = Position.Clone();
 			basis.Rotate(basis.Y,Pitch);
-			this.SetViewport(minX, minY, maxX - minX, maxY - minY, (float)Math.PI / 4.0f, basis.X, basis.Z);
+			this.SetViewport(minX, minY, maxX - minX, maxY - minY, (float)Math.PI / 2.0f, basis.X, basis.Z);
 
 			renderCallback();
 		}

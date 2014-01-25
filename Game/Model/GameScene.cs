@@ -9,8 +9,11 @@ namespace Game.Model
 	{
 		private readonly World world;
 
+		private IViewports viewport;
+
 		public GameScene(World world)
 		{
+			this.viewport = new SingleScreen();
 			this.world = world;
 		}
 
@@ -18,17 +21,13 @@ namespace Game.Model
 
 		public void Render(int width, int height)
 		{
-			var m = Matrix4.LookAt(new Vector3(64, 64, 64), new Vector3(0, 0, 0), new Vector3(0, 0, 1));
-			var p = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI/4.0f, width/(float)height,0.05f,120.0f);
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadMatrix(ref p);
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadMatrix(ref m);
-
-			world.Render();
+			viewport.Render(0,0,width,height,RenderImpl);
 		}
 
-		
+		private void RenderImpl()
+		{
+			world.Render();
+		}
 
 		#endregion
 	}

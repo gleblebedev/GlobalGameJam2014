@@ -60,7 +60,9 @@
     </Compile>
     <Compile Include="Model\GameScene.cs" />
     <Compile Include="Model\IScene.cs" />
+    <Compile Include="Model\IViewports.cs" />
     <Compile Include="Model\MaterialMap.cs" />
+    <Compile Include="Model\SingleScreen.cs" />
     <Compile Include="Model\Texture.cs" />
     <Compile Include="Model\VoxelArray.cs" />
     <Compile Include="Model\World.cs" />

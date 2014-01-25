@@ -59,7 +59,12 @@ namespace Game
 			}
 
 			var world = new World(voxelArray, this.materialMap);
+<<<<<<< HEAD
 			this.gameScene = this.scene = new GameScene(world, options);
+=======
+		    var gameOptions = new GameOptions();
+			this.gameScene = this.scene = new GameScene(world, gameOptions);
+>>>>>>> 2e3de1d51421b5a1ca3bedb4aca45b60a7f02127
 			this.editorScene = new EditorScene(world);
 			this.BringToFront();
 			this.Focus();

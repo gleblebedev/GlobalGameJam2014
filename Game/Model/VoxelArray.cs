@@ -43,9 +43,9 @@ namespace Game.Model
 
 		public void FillBox(byte type, int minX, int minY, int minZ,int maxX, int maxY, int maxZ)
 		{
-			for (int x = minX; x <= maxX; ++x)
-				for (int y = minY; y <= maxY; ++y)
-					for (int z = minZ; z <= maxZ; ++z)
+			for (int x = minX; x <= maxX && x<SizeX; ++x)
+				for (int y = minY; y <= maxY && y<SizeY; ++y)
+					for (int z = minZ; z <= maxZ && z<SizeZ; ++z)
 					{
 						this.data[x, y, z] = type;
 					}

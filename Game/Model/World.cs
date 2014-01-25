@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -517,6 +518,7 @@ namespace Game.Model
 			var dx = contactPoint.X - (float)Math.Floor(contactPoint.X);
 			var dy = contactPoint.Y - (float)Math.Floor(contactPoint.Y);
 			var dz = contactPoint.Z - (float)Math.Floor(contactPoint.Z);
+			
 			if (dx < eps)
 			{
 				if (!IsEmpty(x - 1, y, z))
@@ -584,6 +586,40 @@ namespace Game.Model
 				}
 			}
 			return sum.Normalized();
+		}
+
+		private const float eps = 1e-3f;
+		static readonly Vector3[] BoxBounds = new Vector3[]
+			{
+				new Vector3( -0.5f+eps, -0.5f+eps, -0.5f+eps),
+				new Vector3( +0.5f-eps, -0.5f+eps, -0.5f+eps),
+				new Vector3( -0.5f+eps, +0.5f-eps, -0.5f+eps),
+				new Vector3( +0.5f-eps, +0.5f-eps, -0.5f+eps),
+				new Vector3( -0.5f+eps, -0.5f+eps, +0.5f-eps),
+				new Vector3( +0.5f-eps, -0.5f+eps, +0.5f-eps),
+				new Vector3( -0.5f+eps, +0.5f-eps, +0.5f-eps),
+				new Vector3( +0.5f-eps, +0.5f-eps, +0.5f-eps),
+			};
+		public bool TraceBox(Vector3 prevPos, ref Vector3 newPos, out Vector3 vector3)
+		{
+			var d = newPos - prevPos;
+			Vector3 point, n;
+			bool res = false;
+			vector3 = Vector3.Zero;
+			foreach (var boxBound in BoxBounds)
+			{
+				if (Vector3.Dot(boxBound,d) > 1e-6)
+				{
+					var origin = prevPos + boxBound;
+					if (this.TraceRay(origin, origin + d, out point, out n))
+					{
+						newPos = prevPos + (point - origin);
+						vector3 = n;
+						res = true;
+					}
+				}
+			}
+			return res;
 		}
 	}
 }

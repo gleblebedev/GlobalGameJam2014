@@ -41,15 +41,16 @@ namespace Game
 			var voxelArray = new VoxelArray(32, 32, 32);
 
 			voxelArray.OutlineBox(1, 0, 0, 0, 31, 31, 31);
-			for (int i = 0; i < 1000; ++i)
+			for (int i = 0; i < 100; ++i)
 			{
+				int size = this.rnd.Next(3);
 				var index = this.rnd.Next(voxelArray.SizeX * voxelArray.SizeY * voxelArray.SizeZ);
 				var x = index % voxelArray.SizeX;
 				index /= voxelArray.SizeX;
 				var y = index % voxelArray.SizeY;
 				index /= voxelArray.SizeY;
 				var z = index % voxelArray.SizeZ;
-				voxelArray.FillBox((byte)(this.rnd.Next(3) + 2), x, y, z, x, y, z);
+				voxelArray.FillBox((byte)(this.rnd.Next(3) + 2), x, y, z, x + size, y + size, z + size);
 			}
 
 

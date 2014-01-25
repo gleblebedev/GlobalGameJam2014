@@ -15,7 +15,7 @@ namespace Game.Model
 
 		private SpiderScreen viewport2;
 
-		private Spider spider;
+		private IControlledCreature spider;
 
 		private float a = 0.0f;
 
@@ -34,7 +34,7 @@ namespace Game.Model
 			}
 			while (!world.TraceRay(point, point - new Vector3(0,0,1) * 10.0f, out contactPoint, out contactPointNormal));
 
-			this.spider = new Spider(this.world, contactPoint, contactPointNormal);
+			this.spider = new SimpleSpider(this.world, contactPoint + contactPointNormal*0.5f);
 			
 			this.controller = new WasdController(this.spider);
 		}
@@ -77,6 +77,7 @@ namespace Game.Model
 
 		public void Update(TimeSpan dt)
 		{
+			spider.Update(dt);
 			controller.Update(dt);
 		}
 

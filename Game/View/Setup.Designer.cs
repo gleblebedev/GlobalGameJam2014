@@ -43,6 +43,7 @@
 			this.button1.TabIndex = 0;
 			this.button1.Text = "Start!";
 			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// playerOptions1
 			// 
@@ -50,6 +51,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.playerOptions1.Location = new System.Drawing.Point(13, 13);
 			this.playerOptions1.Name = "playerOptions1";
+			this.playerOptions1.PlayerIndex = 0;
 			this.playerOptions1.Size = new System.Drawing.Size(259, 99);
 			this.playerOptions1.TabIndex = 1;
 			// 
@@ -59,6 +61,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.playerOptions2.Location = new System.Drawing.Point(13, 121);
 			this.playerOptions2.Name = "playerOptions2";
+			this.playerOptions2.PlayerIndex = 0;
 			this.playerOptions2.Size = new System.Drawing.Size(259, 99);
 			this.playerOptions2.TabIndex = 2;
 			// 

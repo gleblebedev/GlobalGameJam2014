@@ -17,7 +17,7 @@ namespace Game
 
 		private readonly Random rnd = new Random();
 
-		private readonly IScene scene;
+		private IScene scene;
 
 		private int h;
 
@@ -32,11 +32,12 @@ namespace Game
 		public GameWindow()
 		{
 			this.InitializeComponent();
+
 			this.materialMap = new MaterialMap();
 
 			this.materialMap[1] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("001")) };
-            this.materialMap[2] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("grass")) };
-            this.materialMap[3] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("wood")) };
+			this.materialMap[2] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("grass")) };
+			this.materialMap[3] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("wood")) };
 			this.materialMap[4] = new WorldMaterial { Color = Color4.Blue };
 			var voxelArray = new VoxelArray(32, 32, 32);
 
@@ -53,8 +54,9 @@ namespace Game
 				voxelArray.FillBox((byte)(this.rnd.Next(3) + 2), x, y, z, x + size, y + size, z + size);
 			}
 
-
-			this.scene = new GameScene(new World(voxelArray, this.materialMap));
+			var world = new World(voxelArray, this.materialMap);
+			this.gameScene = this.scene = new GameScene(world);
+			this.editorScene = new EditorScene(world);
 			this.BringToFront();
 			this.Focus();
 			this.KeyPreview = true;
@@ -79,7 +81,8 @@ namespace Game
 
 		#region Methods
 
-	
+
+
 		private static Bitmap LoadTexture(string s1)
 		{
 			using (var s = typeof(GameWindow).Assembly.GetManifestResourceStream("Game.Textures." + s1 + ".jpg"))
@@ -106,6 +109,11 @@ namespace Game
 		}
 
 		private DateTime? previousTime;
+
+		private IScene gameScene;
+
+		private IScene editorScene;
+
 		private void RenderScene(object sender, PaintEventArgs e)
 		{
 			DateTime now = DateTime.Now;
@@ -171,12 +179,26 @@ namespace Game
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
+	
 			scene.OnKeyDown(e);
 			if (!e.Handled)
 				base.OnKeyDown(e);
 		}
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
+			if (e.KeyCode == Keys.F5)
+			{
+				if (this.scene == this.gameScene)
+				{
+					this.scene = this.editorScene;
+				}
+				else
+				{
+					this.scene = this.gameScene;
+				}
+				e.Handled = true;
+				return;
+			}
 			scene.OnKeyUp(e);
 			if (!e.Handled)
 				base.OnKeyDown(e);

@@ -55,7 +55,8 @@ namespace Game
 			}
 
 			var world = new World(voxelArray, this.materialMap);
-			this.gameScene = this.scene = new GameScene(world);
+		    var gameOptions = new GameOptions();
+			this.gameScene = this.scene = new GameScene(world, gameOptions);
 			this.editorScene = new EditorScene(world);
 			this.BringToFront();
 			this.Focus();

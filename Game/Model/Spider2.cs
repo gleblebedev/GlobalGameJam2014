@@ -64,6 +64,11 @@ namespace Game.Model
             }
         }
 
+        public void Update(TimeSpan dt)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Move(Vector3 direction, float stepScale)
         {
             direction = (Position.X * direction.X + Position.Y * direction.Y + Position.Z * direction.Z);

@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Game.Model
 {
-    class Fly : INonControlledCreature
+    public class Fly : INonControlledCreature
     {
         private readonly World world;
         public Basis Position { get; private set; }
@@ -18,6 +18,7 @@ namespace Game.Model
         public Fly(World world)
         {
             this.world = world;
+            this.Position = new Basis(new Vector3(10, 10, 10));
             this.Position.Origin = new Vector3(10, 10, 10);
             this.ChooseDirection();
         }

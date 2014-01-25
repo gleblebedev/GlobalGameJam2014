@@ -68,6 +68,8 @@
     <Compile Include="Model\Spider.cs" />
     <Compile Include="Model\SpiderScreen.cs" />
     <Compile Include="Model\Texture.cs" />
+    <Compile Include="Model\VertexBuffer.cs" />
+    <Compile Include="Model\VertexBufferItem.cs" />
     <Compile Include="Model\VoxelArray.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldMaterial.cs" />

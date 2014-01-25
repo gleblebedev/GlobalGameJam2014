@@ -18,7 +18,7 @@ namespace Game.Model
 			var pi = (float)Math.PI;
 
 
-		    var numberOfEyes = 2;
+		    var numberOfEyes = 8;
 		    var step = width / numberOfEyes;
 			var maxheight = step * 1.5f;
 			if (maxheight < height)

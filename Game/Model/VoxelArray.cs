@@ -1,3 +1,5 @@
+using System;
+
 namespace Game.Model
 {
 	public class VoxelArray
@@ -64,7 +66,11 @@ namespace Game.Model
 		{
 			get
 			{
-				return this.data[x, y, z];
+				return this.data[
+					Math.Max(0,Math.Min(x,sizeX-1)),
+					Math.Max(0,Math.Min(y,sizeY-1)),
+					Math.Max(0,Math.Min(z,sizeZ-1))
+					];
 			}
 		}
 	}

@@ -59,8 +59,11 @@
       <DependentUpon>GameWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\BaseViewportController.cs" />
+    <Compile Include="Model\Basis.cs" />
     <Compile Include="Model\ControlType.cs" />
     <Compile Include="Model\GameScene.cs" />
+    <Compile Include="Model\IControlledCreature.cs" />
+    <Compile Include="Model\IController.cs" />
     <Compile Include="Model\IScene.cs" />
     <Compile Include="Model\IViewports.cs" />
     <Compile Include="Model\MaterialMap.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Model\VertexBuffer.cs" />
     <Compile Include="Model\VertexBufferItem.cs" />
     <Compile Include="Model\VoxelArray.cs" />
+    <Compile Include="Model\WasdController.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldMaterial.cs" />
     <Compile Include="View\PlayerOptions.cs">

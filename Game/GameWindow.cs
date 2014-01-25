@@ -57,7 +57,9 @@ namespace Game
 			this.BringToFront();
 			this.Focus();
 			this.KeyPreview = true;
+			glControl.MouseMove += OnGlControlMouseMove;
 		}
+
 
 		#endregion
 
@@ -76,38 +78,7 @@ namespace Game
 
 		#region Methods
 
-		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-		{
-			switch (keyData)
-			{
-				case Keys.Left:
-				case Keys.A:
-					this.TurnLeft();
-					return true;
-					break;
-				case Keys.Right:
-				case Keys.D:
-					this.TurnRight();
-					return true;
-					break;
-				case Keys.Up:
-				case Keys.W:
-					this.GoForward();
-					return true;
-					break;
-				case Keys.Down:
-				case Keys.S:
-					this.GoBack();
-					return true;
-					break;
-				default:
-					return base.ProcessCmdKey(ref msg, keyData);
-					break;
-			}
-			// etc..
-			return base.ProcessCmdKey(ref msg, keyData);
-		}
-
+	
 		private static Bitmap LoadTexture(string s1)
 		{
 			using (var s = typeof(GameWindow).Assembly.GetManifestResourceStream("Game.Textures." + s1 + ".jpg"))
@@ -133,8 +104,16 @@ namespace Game
 			//
 		}
 
+		private DateTime? previousTime;
 		private void RenderScene(object sender, PaintEventArgs e)
 		{
+			DateTime now = DateTime.Now;
+			if (previousTime != null)
+			{
+				var dt = now.Subtract(previousTime.Value);
+				this.scene.Update(dt);
+			}
+			previousTime = now;
 			if (!this.loaded) // Play nice
 			{
 				return;
@@ -185,14 +164,22 @@ namespace Game
 			//this.Camera.AspectRatio = w / (float)h;
 		}
 
-		private void TurnLeft()
+		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			//
+			scene.OnKeyDown(e);
+			if (!e.Handled)
+				base.OnKeyDown(e);
 		}
-
-		private void TurnRight()
+		protected override void OnKeyUp(KeyEventArgs e)
 		{
-			//
+			scene.OnKeyUp(e);
+			if (!e.Handled)
+				base.OnKeyDown(e);
+		}
+	
+		private void OnGlControlMouseMove(object sender, MouseEventArgs e)
+		{
+			scene.OnMouseMove(e);
 		}
 
 		#endregion

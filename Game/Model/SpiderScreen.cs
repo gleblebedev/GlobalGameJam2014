@@ -6,13 +6,17 @@ namespace Game.Model
 {
 	public class SpiderScreen : BaseViewportController, IViewports
 	{
+		public float Pitch { get; set; }
+
+	
+
 		public void Render(int minX, int minY, int maxX, int maxY, Action renderCallback)
 		{
 			int width = Math.Max(1,maxX - minX);
 			int height = Math.Max(1,maxY - minY);
 
-			var forward = this.Forward.Normalized();
-			var right = Vector3.Cross(this.Up, forward).Normalized();
+			var forward = this.Position.X.Normalized();
+			var right = Vector3.Cross(this.Position.Z, forward).Normalized();
 			var up = Vector3.Cross(forward,right).Normalized();
 
 			var pi = (float)Math.PI;

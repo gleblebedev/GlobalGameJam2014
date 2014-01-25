@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 
 using OpenTK;
 using OpenTK.Graphics;
@@ -14,12 +15,19 @@ namespace Game.Model
 
 		private SpiderScreen viewport2;
 
+		private Spider spider;
+
 		private float a = 0.0f;
+
+		private IController controller;
 
 		public GameScene(World world)
 		{
 			this.viewport = new SingleScreen();
 			this.viewport2 = new SpiderScreen();
+			this.spider = new Spider();
+			spider.Position.Origin = new Vector3(16, 16, 16);
+			this.controller = new WasdController(this.spider);
 			this.world = world;
 		}
 
@@ -27,18 +35,34 @@ namespace Game.Model
 
 		public void Render(int width, int height)
 		{
-			a += 0.01f;
-			var cos = (float)Math.Cos(a);
-			var sin = (float)Math.Sin(a);
-			viewport.Eye = new Vector3(16, 16, 16);
-			viewport.Forward = new Vector3(cos, sin, 0);
-			viewport.Up = new Vector3(0, 0, 1);
+			
+			viewport.Position = spider.Position;
+			viewport.Pitch = spider.Pitch;
 			viewport.Render(0,0,width,height/2,RenderImpl);
 
-			viewport2.Eye = viewport.Eye;
-			viewport2.Forward = viewport.Forward;
-			viewport2.Up = viewport.Up;
+			viewport2.Position = spider.Position;
+			viewport2.Pitch = spider.Pitch;
 			viewport2.Render(0, height / 2, width, height, RenderImpl);
+		}
+
+		public void Update(TimeSpan dt)
+		{
+			controller.Update(dt);
+		}
+
+		public void OnKeyDown(KeyEventArgs keyEventArgs)
+		{
+			controller.OnKeyDown(keyEventArgs);
+		}
+
+		public void OnKeyUp(KeyEventArgs keyEventArgs)
+		{
+			controller.OnKeyUp(keyEventArgs);
+		}
+
+		public void OnMouseMove(MouseEventArgs mouseEventArgs)
+		{
+			controller.OnMouseMove(mouseEventArgs);
 		}
 
 		private void RenderImpl()

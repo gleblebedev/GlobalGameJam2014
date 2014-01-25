@@ -60,12 +60,42 @@ namespace Game.Model
 
 		public void Move(Vector3 direction, float stepScale)
 		{
+			if (stepScale == 0)
+				return;
+			if (stepScale < 0)
+			{
+				direction = -direction;
+				stepScale = -stepScale;
+			}
 			direction = (Position.X * direction.X + Position.Y * direction.Y + Position.Z * direction.Z);
 			direction = direction - contactPointNormal * Vector3.Dot(direction, contactPointNormal);
 			direction.Normalize();
+			float eps = 1e-6f;
+			if (direction.X > -eps && direction.X < eps) direction.X = 0;
+			if (direction.Y > -eps && direction.Y < eps) direction.Y = 0;
+			if (direction.Z > -eps && direction.Z < eps) direction.Z = 0;
+			direction.Normalize();
 
 			//Position.Origin += direction*stepScale;
-			contactPoint += direction * stepScale;
+			var center = contactPoint + contactPointNormal * 0.5f;
+			var x = (int)Math.Floor(center.X);
+			var y = (int)Math.Floor(center.Y);
+			var z = (int)Math.Floor(center.Z);
+
+			//float maxStepScale = stepScale;
+
+			//if (direction.X > eps)
+			//{
+			//}
+			//else if (direction.X < eps)
+			//{
+				
+			//}
+			
+			var newContact = contactPoint + direction * stepScale;
+
+			contactPoint = newContact;
+			
 			UpdateBasis();
 		}
 

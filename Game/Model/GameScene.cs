@@ -44,7 +44,7 @@ namespace Game.Model
 			retry:
 			var x = rnd.Next(world.SizeX);
 			var y = rnd.Next(world.SizeY);
-			var z = rnd.Next(world.SizeZ);
+			var z = 1;// rnd.Next(world.SizeZ);
 			if (!world.IsEmpty(x, y, z)) goto retry;
 			while (z > 0 && world.IsEmpty(x,y,z-1))
 			{

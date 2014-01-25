@@ -42,11 +42,14 @@ namespace Game
 			materialMap[4] = new WorldMaterial() { Color = Color4.Blue };
 			var voxelArray = new VoxelArray(32, 32, 32);
 			voxelArray.OutlineBox(1,0,0,0,31,31,31);
-			for (int i = 0; i < 220;++i )
+			for (int i = 0; i < 1000;++i )
 			{
-				var x = rnd.Next(voxelArray.SizeX);
-				var y = rnd.Next(voxelArray.SizeY);
-				var z = rnd.Next(voxelArray.SizeZ);
+				var index = rnd.Next(voxelArray.SizeX * voxelArray.SizeY * voxelArray.SizeZ);
+				var x = index % voxelArray.SizeX;
+				index /= voxelArray.SizeX;
+				var y = index % voxelArray.SizeY;
+				index /= voxelArray.SizeY;
+				var z = index % voxelArray.SizeZ;
 				voxelArray.FillBox((byte)(rnd.Next(3) + 2), x, y,z,x,y,z);
 			}
 		    this.scene = new GameScene(new World(voxelArray, materialMap));

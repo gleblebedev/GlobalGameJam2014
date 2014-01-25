@@ -32,8 +32,10 @@ namespace Game.Model
 				Vector3 f;
 				Vector3 r;
 				var fovx = pi / 4.0f;
-				var a = (-1 + fovx/2.0f + index * fovx);
-				this.Rotate(forward, right, a, out f, out  r);
+				var wholeArea = numberOfEyes * fovx;
+				var offset = - wholeArea * 0.5f + fovx*0.5f;
+				var a = - (index * fovx + offset);
+				this.Rotate(forward,right,a,out f,out  r);
 				this.SetViewport(minX + index * step, minY,  step, height, fovx, f, up);
 				renderCallback();
 			}

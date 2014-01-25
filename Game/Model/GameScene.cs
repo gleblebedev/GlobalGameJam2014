@@ -30,10 +30,11 @@ namespace Game.Model
 			a += 0.01f;
 			var cos = (float)Math.Cos(a);
 			var sin = (float)Math.Sin(a);
-			viewport.Eye = new Vector3(10, 10, 4);
+			viewport.Eye = new Vector3(16, 16, 16);
 			viewport.Forward = new Vector3(cos, sin, 0);
 			viewport.Up = new Vector3(0, 0, 1);
 			viewport.Render(0,0,width,height/2,RenderImpl);
+
 			viewport2.Eye = viewport.Eye;
 			viewport2.Forward = viewport.Forward;
 			viewport2.Up = viewport.Up;

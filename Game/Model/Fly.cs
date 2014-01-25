@@ -38,31 +38,32 @@ namespace Game.Model
         private void ChooseDirection()
         {
             var xComponent = random.Next(-1, 1);
-            if (Position.Origin.X > world.SizeX)
+            var maxPath = 10;
+            if (Position.Origin.X + maxPath > world.SizeX)
             {
                 xComponent = random.Next(-1, 0);
             }
-            else if (Position.Origin.X < 0)
+            else if (Position.Origin.X < maxPath)
             {
                 xComponent = random.Next(0, 1);
             }
 
             var yComponent = random.Next(-1, 1);
-            if (Position.Origin.Y > world.SizeY)
+            if (Position.Origin.Y + maxPath > world.SizeY)
             {
                 yComponent = random.Next(-1, 0);
             }
-            else if(Position.Origin.Y < 0)
+            else if(Position.Origin.Y < maxPath)
             {
                 yComponent = random.Next(0, 1);
             }
 
             var zComponent = random.Next(-1, 1);
-            if (Position.Origin.Z > world.SizeZ)
+            if (Position.Origin.Z + maxPath > world.SizeZ)
             {
                 zComponent = random.Next(-1, 0);
             }
-            else if (Position.Origin.Z < 0)
+            else if (Position.Origin.Z < maxPath)
             {
                 zComponent = random.Next(-1, 0);
             }

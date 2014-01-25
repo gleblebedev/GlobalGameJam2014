@@ -305,7 +305,7 @@ namespace Game.Model
 								ScaleColor(ref c11, ambientOcclustion);
 							}
 							items.Add(new VertexBufferItem(new Vector3(x, y, z + 1), c00, quadUv[0]));
-							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z + 1), c11, quadUv[1]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z + 1), c10, quadUv[1]));
 							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z + 1), c11, quadUv[2]));
 							items.Add(new VertexBufferItem(new Vector3(x, y + 1, z + 1), c01, quadUv[3]));
 						}

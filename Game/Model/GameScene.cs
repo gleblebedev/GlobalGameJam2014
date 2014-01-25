@@ -70,6 +70,7 @@ namespace Game.Model
 			world.Render();
 
 			GL.DepthMask(false);
+			GL.Disable(EnableCap.DepthTest);
 			GL.Begin(PrimitiveType.Lines);
 
 			GL.Color4(Color4.Red);
@@ -85,6 +86,8 @@ namespace Game.Model
 			GL.Vertex3(0, 0, 100);
 
 			GL.End();
+			GL.DepthMask(true);
+			GL.Enable(EnableCap.DepthTest);
 		}
 
 		#endregion

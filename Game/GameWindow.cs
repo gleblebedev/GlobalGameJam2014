@@ -55,6 +55,7 @@ namespace Game
 				voxelArray.FillBox((byte)(this.rnd.Next(3) + 2), x, y, z, x, y, z);
 			}
 
+
 			this.scene = new GameScene(new World(voxelArray, this.materialMap));
 			this.BringToFront();
 			this.Focus();

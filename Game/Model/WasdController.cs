@@ -96,27 +96,27 @@ namespace Game.Model
 			var scale = (float)dt.TotalSeconds;
 			if (trunLeft && !trunRight)
 			{
-				spider.Position.Rotate(spider.Position.Z, scale);
+				spider.Rotate(scale);
 			}
 			if (!trunLeft && trunRight)
 			{
-				spider.Position.Rotate(spider.Position.Z, -scale);
+				spider.Rotate(-scale);
 			}
 			if (left && !right)
 			{
-				spider.Position.Origin += spider.Position.Y * scale;
+				spider.Move(new Vector3(0,1,0), scale);
 			}
 			if (!left && right)
 			{
-				spider.Position.Origin -= spider.Position.Y * scale;
+				spider.Move(new Vector3(0, -1, 0), scale);
 			}
 			if (forward && !backward)
 			{
-				spider.Position.Origin += spider.Position.X * scale;
+				spider.Move(new Vector3(1, 0, 0.3f), scale);
 			}
 			if (!forward && backward)
 			{
-				spider.Position.Origin -= spider.Position.X * scale;
+				spider.Move(new Vector3(-1, 0, 0), scale);
 			}
 		}
 

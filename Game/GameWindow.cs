@@ -23,8 +23,6 @@ namespace Game
 
 		private bool loaded;
 
-		private Spider spider;
-
 		private int w;
 
 		#endregion
@@ -34,7 +32,6 @@ namespace Game
 		public GameWindow()
 		{
 			this.InitializeComponent();
-			this.spider = new Spider();
 			this.materialMap = new MaterialMap();
 
 			this.materialMap[1] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("001")) };

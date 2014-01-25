@@ -1,3 +1,5 @@
+using OpenTK;
+
 namespace Game.Model
 {
 	public interface IControlledCreature
@@ -5,5 +7,9 @@ namespace Game.Model
 		Basis Position { get;  }
 
 		float Pitch { get; set; }
+
+		void Move(Vector3 direction, float stepScale);
+
+		void Rotate(float angle);
 	}
 }

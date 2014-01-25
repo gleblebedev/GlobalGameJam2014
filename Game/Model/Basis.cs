@@ -86,5 +86,15 @@ namespace Game.Model
 		{
 			return new Basis(origin) {x = x,y = y,z =z};
 		}
+
+		public void SetRotation(Vector3 x, Vector3 z)
+		{
+			this.x = x;
+			this.x.Normalize();
+			this.y = Vector3.Cross(z, x);
+			this.y.Normalize();
+			this.z = Vector3.Cross(x, y);
+			this.z.Normalize();
+		}
 	}
 }

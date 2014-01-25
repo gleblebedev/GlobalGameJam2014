@@ -497,5 +497,93 @@ namespace Game.Model
 			var v = (int)Math.Floor(f);
 			return (int)v;
 		}
+
+		public Vector3 GetAverageNormal(Vector3 contactPoint, Vector3 contactPointNormal)
+		{
+			Vector3 sum = contactPointNormal;
+			int x, y, z;
+			int cpx, cpy, cpz;
+			{
+				var c = contactPoint + contactPointNormal * 0.5f;
+				var cp = contactPoint - contactPointNormal * 0.5f;
+				x = (int)Math.Floor(c.X);
+				y = (int)Math.Floor(c.Y);
+				z = (int)Math.Floor(c.Z);
+				cpx = (int)Math.Floor(cp.X);
+				cpy = (int)Math.Floor(cp.Y);
+				cpz = (int)Math.Floor(cp.Z);
+			}
+			var eps = 0.45f;
+			var dx = contactPoint.X - (float)Math.Floor(contactPoint.X);
+			var dy = contactPoint.Y - (float)Math.Floor(contactPoint.Y);
+			var dz = contactPoint.Z - (float)Math.Floor(contactPoint.Z);
+			if (dx < eps)
+			{
+				if (!IsEmpty(x - 1, y, z))
+				{
+					sum += ((eps - dx) / eps) * new Vector3(1, 0, 0);
+				}
+				else if (IsEmpty(cpx - 1, cpy, cpz))
+				{
+					sum += ((eps - dx) / eps) * new Vector3(-1, 0, 0);
+				}
+			}
+			else if (1 - dx < eps)
+			{
+				if (!IsEmpty(x + 1, y, z))
+				{
+					sum += ((eps - (1 - dx)) / eps) * new Vector3(-1, 0, 0);
+				}
+				else if (IsEmpty(cpx + 1, cpy, cpz))
+				{
+					sum += ((eps - dx) / eps) * new Vector3(1, 0, 0);
+				}
+			}
+			if (dy < eps)
+			{
+				if (!IsEmpty(x, y - 1, z))
+				{
+					sum += ((eps - dy) / eps) * new Vector3(0, 1, 0);
+				}
+				else if (IsEmpty(cpx, cpy - 1, cpz))
+				{
+					sum += ((eps - dy) / eps) * new Vector3(0, -1, 0);
+				}
+			}
+			else if (1 - dy < eps)
+			{
+				if (!IsEmpty(x, y + 1, z))
+				{
+					sum += ((eps - (1 - dy)) / eps) * new Vector3(0, -1, 0);
+				}
+				else if (IsEmpty(cpx, cpy + 1, cpz))
+				{
+					sum += ((eps - (1 - dy)) / eps) * new Vector3(0, 1, 0);
+				}
+			}
+			if (dz < eps)
+			{
+				if (!IsEmpty(x,y, z - 1))
+				{
+					sum += ((eps - dz) / eps) * new Vector3(0, 0, 1);
+				}
+				else if (IsEmpty(cpx, cpy, cpz - 1))
+				{
+					sum += ((eps - dz) / eps) * new Vector3(0, 0, -1);
+				}
+			}
+			else if (1 - dz < eps)
+			{
+				if (!IsEmpty(x, y,z + 1))
+				{
+					sum += ((eps - (1 - dz)) / eps) * new Vector3(0, 0, -1);
+				}
+				else if (IsEmpty(cpx, cpy, cpz + 1))
+				{
+					sum += ((eps - (1 - dz)) / eps) * new Vector3(0, 0, 1);
+				}
+			}
+			return sum.Normalized();
+		}
 	}
 }

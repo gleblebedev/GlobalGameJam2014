@@ -27,15 +27,14 @@ namespace Game.Model
 
 			this.viewport = new SingleScreen();
 			this.viewport2 = new SpiderScreen();
-			this.spider = new Spider();
-			//Vector3 contactPoint, contactPointNormal;
-			//do
+			Vector3 contactPoint, contactPointNormal,point;
+			do
 			{
-				spider.Position.Origin = GetSpawnPoint();
+				point = GetSpawnPoint();
 			}
-			//while (!world.TraceRay(this.spider.Position.Origin, this.spider.Position.Origin - this.spider.Position.Z * 10.0f, out contactPoint, out contactPointNormal));
-			//this.spider.ContactPoint = contactPoint;
-			//this.spider.ContactPointNormal = contactPointNormal;
+			while (!world.TraceRay(point, point - new Vector3(0,0,1) * 10.0f, out contactPoint, out contactPointNormal));
+
+			this.spider = new Spider(this.world, contactPoint, contactPointNormal);
 			
 			this.controller = new WasdController(this.spider);
 		}
@@ -45,7 +44,7 @@ namespace Game.Model
 			retry:
 			var x = rnd.Next(world.SizeX);
 			var y = rnd.Next(world.SizeY);
-			var z = 1;// rnd.Next(world.SizeZ); we start at floor (debug)
+			var z = rnd.Next(world.SizeZ);
 			if (!world.IsEmpty(x, y, z)) goto retry;
 			while (z > 0 && world.IsEmpty(x,y,z-1))
 			{
@@ -119,7 +118,7 @@ namespace Game.Model
 				GL.Color4(Color4.Green);
 				GL.Vertex3(newBlockPoint - Vector3.UnitY);
 				GL.Vertex3(newBlockPoint + Vector3.UnitY);
-				GL.Color4(Color4.Red);
+				GL.Color4(Color4.Blue);
 				GL.Vertex3(newBlockPoint - Vector3.UnitZ);
 				GL.Vertex3(newBlockPoint + Vector3.UnitZ);
 

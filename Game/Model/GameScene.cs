@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 using OpenTK;
@@ -21,9 +22,18 @@ namespace Game.Model
 
 		private IController controller;
 
-		public GameScene(World world)
+		private IList<PlayerData> players;
+		public GameScene(World world, GameOptions options)
 		{
 			this.world = world;
+			players = new List<PlayerData>();
+			
+			foreach (var player in options.Players)
+			{
+				if (player.Control != ControlType.None)
+				{
+				}
+			}
 
 			this.viewport = new SingleScreen();
 			this.viewport2 = new SpiderScreen();

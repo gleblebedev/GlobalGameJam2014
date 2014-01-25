@@ -82,6 +82,7 @@
     <Compile Include="Model\VertexBuffer.cs" />
     <Compile Include="Model\VertexBufferItem.cs" />
     <Compile Include="Model\VoxelArray.cs" />
+    <Compile Include="Model\VoxelArrayJsonConverter.cs" />
     <Compile Include="Model\WasdController.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldMaterial.cs" />
@@ -117,6 +118,7 @@
     <EmbeddedResource Include="View\Setup.resx">
       <DependentUpon>Setup.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="GameOptions.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

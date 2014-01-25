@@ -1,5 +1,7 @@
 using System;
 
+using OpenTK;
+
 namespace Game.Model
 {
 	public class Spider : IControlledCreature
@@ -29,6 +31,16 @@ namespace Game.Model
 			set
 			{
 				this.pitch = Math.Max(-MaxPitch, Math.Min(MaxPitch, value));
+			}
+		}
+
+		public Vector3 LookDirection
+		{
+			get
+			{
+				var b = this.Position.Clone();
+				b.Rotate(b.Y, Pitch);
+				return b.X;
 			}
 		}
 

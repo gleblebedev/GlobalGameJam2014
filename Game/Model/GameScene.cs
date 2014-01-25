@@ -23,18 +23,49 @@ namespace Game.Model
 
 		public GameScene(World world)
 		{
+			this.world = world;
+
 			this.viewport = new SingleScreen();
 			this.viewport2 = new SpiderScreen();
 			this.spider = new Spider();
-			spider.Position.Origin = new Vector3(16, 16, 16);
+			//Vector3 contactPoint, contactPointNormal;
+			//do
+			{
+				spider.Position.Origin = GetSpawnPoint();
+			}
+			//while (!world.TraceRay(this.spider.Position.Origin, this.spider.Position.Origin - this.spider.Position.Z * 10.0f, out contactPoint, out contactPointNormal));
+			//this.spider.ContactPoint = contactPoint;
+			//this.spider.ContactPointNormal = contactPointNormal;
+			
 			this.controller = new WasdController(this.spider);
-			this.world = world;
 		}
 
+		private Vector3 GetSpawnPoint()
+		{
+			retry:
+			var x = rnd.Next(world.SizeX);
+			var y = rnd.Next(world.SizeY);
+			var z = 1;// rnd.Next(world.SizeZ); we start at floor (debug)
+			if (!world.IsEmpty(x, y, z)) goto retry;
+			while (z > 0 && world.IsEmpty(x,y,z-1))
+			{
+				--z;
+			}
+			if (z == 0)
+				goto retry;
+			return new Vector3(x+0.5f, y+0.5f, z+0.5f);
+		}
+		Random rnd = new Random();
+
+		private bool hasBlockPos;
+		Vector3 newBlockPoint;
+		Vector3 newBlockNormal;
 		#region Implementation of IScene
 
 		public void Render(int width, int height)
-		{		
+		{
+			
+			this.hasBlockPos = world.TraceRay(this.spider.Position.Origin, this.spider.Position.Origin + this.spider.LookDirection * 10.0f, out newBlockPoint, out newBlockNormal);
 
 			viewport.Position = spider.Position;
 			viewport.Pitch = spider.Pitch;
@@ -71,7 +102,57 @@ namespace Game.Model
 
 			GL.DepthMask(false);
 			GL.Disable(EnableCap.DepthTest);
-			GL.Begin(PrimitiveType.Lines);
+			GL.Disable(EnableCap.Texture2D);
+
+			if (hasBlockPos)
+			{
+				var p = newBlockPoint + newBlockNormal * 0.5f;
+				int x = (int)Math.Floor(p.X);
+				int y = (int)Math.Floor(p.Y);
+				int z = (int)Math.Floor(p.Z);
+
+				GL.Begin(PrimitiveType.Lines);
+
+				GL.Color4(Color4.Red);
+				GL.Vertex3(newBlockPoint-Vector3.UnitX);
+				GL.Vertex3(newBlockPoint + Vector3.UnitX);
+				GL.Color4(Color4.Green);
+				GL.Vertex3(newBlockPoint - Vector3.UnitY);
+				GL.Vertex3(newBlockPoint + Vector3.UnitY);
+				GL.Color4(Color4.Red);
+				GL.Vertex3(newBlockPoint - Vector3.UnitZ);
+				GL.Vertex3(newBlockPoint + Vector3.UnitZ);
+
+				GL.Color4(Color4.White);
+				GL.Vertex3(x, y, z);
+				GL.Vertex3(x+1, y, z);
+				GL.Vertex3(x, y+1, z);
+				GL.Vertex3(x + 1, y+1, z);
+				GL.Vertex3(x, y + 1, z+1);
+				GL.Vertex3(x + 1, y + 1, z+1);
+				GL.Vertex3(x, y , z + 1);
+				GL.Vertex3(x + 1, y, z + 1);
+
+				GL.Vertex3(x, y, z);
+				GL.Vertex3(x, y, z+1);
+				GL.Vertex3(x+1, y, z);
+				GL.Vertex3(x+1, y, z + 1);
+				GL.Vertex3(x + 1, y+1, z);
+				GL.Vertex3(x + 1, y+1, z + 1);
+				GL.Vertex3(x , y + 1, z);
+				GL.Vertex3(x , y + 1, z + 1);
+
+				GL.Vertex3(x, y, z);
+				GL.Vertex3(x, y + 1, z);
+				GL.Vertex3(x+1, y, z);
+				GL.Vertex3(x+1, y + 1, z);
+				GL.Vertex3(x + 1, y, z+1);
+				GL.Vertex3(x + 1, y + 1, z+1);
+				GL.Vertex3(x , y, z + 1);
+				GL.Vertex3(x , y + 1, z + 1);
+				GL.End();
+			}
+
 
 			GL.Color4(Color4.Red);
 			GL.Vertex3(0, 0, 0);

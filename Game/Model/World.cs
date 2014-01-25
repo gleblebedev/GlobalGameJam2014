@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -324,6 +325,177 @@ namespace Game.Model
 		private void ScaleColor(ref Color4 c00, float f)
 		{
 			c00 = new Color4((c00.R*f),(c00.G*f),(c00.B*f),c00.A);
+		}
+
+		public bool IsEmpty(int x, int y, int z)
+		{
+			if (voxels[x, y, z] == MaterialMap.Empty) return true;
+			return false;
+		}
+		public bool IsEmpty(float x, float y, float z)
+		{
+			var intx = (int)Math.Floor(x);
+			var inty = (int)Math.Floor(y);
+			var intz = (int)Math.Floor(z);
+			if (voxels[intx, inty, intz] == MaterialMap.Empty) return true;
+			return false;
+		}
+		public bool IsEmpty(Vector3 v)
+		{
+			return IsEmpty(v.X,v.Y,v.Z);
+		}
+		public bool TraceRay(Vector3 origin, Vector3 destination, out Vector3 contactPoint, out Vector3 contactPointNormal)
+		{
+			Vector3 n = Vector3.Zero;
+			bool res = false;
+			var dx = destination.X - origin.X;
+			if (dx > 1e-6)
+			{
+				res |= this.TracePosX(origin, ref destination, ref n);
+			}
+			else if (dx < -1e-6)
+			{
+				res |= this.TraceNegX(origin, ref destination, ref n);
+			}
+			var dy = destination.Y - origin.Y;
+			if (dy > 1e-6)
+			{
+				res |= this.TracePosY(origin, ref destination, ref n);
+			}
+			else if (dy < -1e-6)
+			{
+				res |= this.TraceNegY(origin, ref destination, ref n);
+			}
+			var dz = destination.Z - origin.Z;
+			if (dz > 1e-6)
+			{
+				res |= this.TracePosZ(origin, ref destination, ref n);
+			}
+			else if (dz< -1e-6)
+			{
+				res |= this.TraceNegZ(origin, ref destination, ref n);
+			}
+			contactPoint = destination;
+			contactPointNormal = n;
+			return res;
+		}
+		private bool TraceNegX(Vector3 origin, ref Vector3 destination, ref Vector3 n)
+		{
+			float dx = destination.X - origin.X;
+			int x = (int)Math.Floor(origin.X);
+			while (x > destination.X)
+			{
+				var scale = (x - origin.X) / dx;
+				var point = origin * (1.0f - scale) + destination * scale;
+				if (!IsEmpty(point - new Vector3(0.5f, 0, 0)))
+				{
+					destination = point;
+					n = new Vector3(1, 0, 0);
+					return true;
+				}
+				--x;
+			}
+			return false;
+		}
+		private bool TraceNegY(Vector3 origin, ref Vector3 destination, ref Vector3 n)
+		{
+			float dy = destination.Y - origin.Y;
+			int x = (int)Math.Floor(origin.Y);
+			while (x > destination.Y)
+			{
+				var scale = (x - origin.Y) / dy;
+				var point = origin * (1.0f - scale) + destination * scale;
+				if (!IsEmpty(point - new Vector3(0,0.5f, 0)))
+				{
+					destination = point;
+					n = new Vector3(0, 1, 0);
+					return true;
+				}
+				--x;
+			}
+			return false;
+		}
+		private bool TraceNegZ(Vector3 origin, ref Vector3 destination, ref Vector3 n)
+		{
+			float dz = destination.Z - origin.Z;
+			int z = (int)Math.Floor(origin.Z);
+			while (z > destination.Z)
+			{
+				var scale = (z - origin.Z) / dz;
+				var point = origin*(1.0f-scale)  + destination*scale;
+				if (!IsEmpty(point - new Vector3(0,0,0.5f)))
+				{
+					destination = point;
+					n = new Vector3(0, 0, 1);
+					return true;
+				}
+				--z;
+			}
+			return false;
+		}
+		private bool TracePosX(Vector3 origin, ref Vector3 destination, ref Vector3 n)
+		{
+			float dz = destination.X - origin.X;
+			int x = 1 + (int)Math.Floor(origin.X);
+			while (x < destination.X)
+			{
+				var scale = (x - origin.X) / dz;
+				var point = origin * (1.0f - scale) + destination * scale;
+				if (!IsEmpty(point + new Vector3(0.5f, 0, 0)))
+				{
+					destination = point;
+					n = new Vector3(-1,0, 0);
+					return true;
+				}
+				++x;
+			}
+			return false;
+		}
+		private bool TracePosY(Vector3 origin, ref Vector3 destination, ref Vector3 n)
+		{
+			float dy = destination.Y - origin.Y;
+			int x = 1 + (int)Math.Floor(origin.Y);
+			while (x < destination.Y)
+			{
+				var scale = (x - origin.Y) / dy;
+				var point = origin * (1.0f - scale) + destination * scale;
+				if (!IsEmpty(point + new Vector3(0, 0.5f, 0)))
+				{
+					destination = point;
+					n = new Vector3(0, -1,0);
+					return true;
+				}
+				++x;
+			}
+			return false;
+		}
+		private bool TracePosZ(Vector3 origin, ref Vector3 destination, ref Vector3 n)
+		{
+			float dz = destination.Z - origin.Z;
+			int z = 1+(int)Math.Floor(origin.Z);
+			while (z < destination.Z)
+			{
+				var scale = (z - origin.Z) / dz;
+				var point = origin * (1.0f - scale) + destination * scale;
+				if (!IsEmpty(point + new Vector3(0, 0, 0.5f)))
+				{
+					destination = point;
+					n = new Vector3(0, 0, -1);
+					return true;
+				}
+				++z;
+			}
+			return false;
+		}
+		private int  NextPositiveValue(float f)
+		{
+			var v = (int)Math.Floor(f);
+			return (int)(v + 1);
+		}
+		private int NextNegativeValue(float f)
+		{
+			var v = (int)Math.Floor(f);
+			return (int)v;
 		}
 	}
 }

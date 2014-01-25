@@ -16,10 +16,14 @@ namespace Game
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-			var gameWindow = new GameWindow();
-			Application.Idle += (sender, e) =>
-				{ gameWindow.UpdateGame(); };
-	        Application.Run(gameWindow);
+	        var s = new Setup();
+			if (s.ShowDialog() == DialogResult.OK)
+			{
+				var gameWindow = new GameWindow();
+				Application.Idle += (sender, e) =>
+					{ gameWindow.UpdateGame(); };
+				Application.Run(gameWindow);
+			}
         }
     }
 }

@@ -15,9 +15,8 @@ namespace Game.Model
 			int width = Math.Max(1,maxX - minX);
 			int height = Math.Max(1,maxY - minY);
 
-			var forward = this.Position.X.Normalized();
-			var right = Vector3.Cross(this.Position.Z, forward).Normalized();
-			var up = Vector3.Cross(forward,right).Normalized();
+
+			var basis = this.Position.Clone();
 
 			var pi = (float)Math.PI;
 
@@ -39,8 +38,11 @@ namespace Game.Model
 				var wholeArea = numberOfEyes * fovx;
 				var offset = - wholeArea * 0.5f + fovx*0.5f;
 				var a = - (index * fovx + offset);
-				this.Rotate(forward,right,a,out f,out  r);
-				this.SetViewport(minX + index * step, minY,  step, height, fovx, f, up);
+
+				var b = basis.Clone();
+				b.Rotate(b.Z,a);
+				b.Rotate(b.Y,Pitch);
+				this.SetViewport(minX + index * step, minY,  step, height, fovx, b.X, b.Z);
 				renderCallback();
 			}
 

@@ -61,6 +61,7 @@
     <Compile Include="Model\BaseViewportController.cs" />
     <Compile Include="Model\Basis.cs" />
     <Compile Include="Model\ControlType.cs" />
+    <Compile Include="Model\GamePadController.cs" />
     <Compile Include="Model\GameScene.cs" />
     <Compile Include="Model\IControlledCreature.cs" />
     <Compile Include="Model\IController.cs" />

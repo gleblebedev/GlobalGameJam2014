@@ -38,8 +38,8 @@ namespace Game
 			this.materialMap = new MaterialMap();
 
 			this.materialMap[1] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("001")) };
-			this.materialMap[2] = new WorldMaterial { Color = Color4.Red };
-			this.materialMap[3] = new WorldMaterial { Color = Color4.Green };
+            this.materialMap[2] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("grass")) };
+            this.materialMap[3] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("wood")) };
 			this.materialMap[4] = new WorldMaterial { Color = Color4.Blue };
 			var voxelArray = new VoxelArray(32, 32, 32);
 			voxelArray.OutlineBox(1, 0, 0, 0, 31, 31, 31);

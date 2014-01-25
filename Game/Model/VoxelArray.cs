@@ -60,6 +60,9 @@ namespace Game.Model
 
 			this.FillBox(type, minX, minY, minZ, maxX, maxY, minZ);
 			this.FillBox(type, minX, minY, maxZ, maxX, maxY, maxZ);
+
+            //SomeRandomBullshit
+            this.FillBox(1, 10, 1, 10, 12, 2, 13);
 		}
 
 		public int this[int x, int y, int z]

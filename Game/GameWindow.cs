@@ -130,22 +130,7 @@ namespace Game
 	                        scene.Render(w,h);
 
 
-				 GL.DepthMask(false);
-							GL.Begin(PrimitiveType.Lines);
 
-							GL.Color4(Color4.Red);
-							GL.Vertex3(0, 0, 0);
-							GL.Vertex3(100, 0, 0);
-
-							GL.Color4(Color4.Green);
-							GL.Vertex3(0, 0, 0);
-							GL.Vertex3(0, 100, 0);
-
-							GL.Color4(Color4.Blue);
-							GL.Vertex3(0, 0, 0);
-							GL.Vertex3(0, 0, 100);
-
-							GL.End();
 
             GL.Flush();
             this.glControl.SwapBuffers();
@@ -191,5 +176,14 @@ namespace Game
 
             //this.Camera.AspectRatio = w / (float)h;
         }
+
+	    public void UpdateGame()
+	    {
+		    //if (glControl.IsIdle)
+		    {
+				glControl.Invalidate();
+			    //this.RenderScene(this, null);
+		    }
+	    }
     }
 }

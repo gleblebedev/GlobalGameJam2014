@@ -17,7 +17,6 @@ namespace Game.Model
 
 			var pi = (float)Math.PI;
 
-			var fovx = pi / 4.0f;
 
 			var step = width / 8;
 			var maxheight = step * 1.5f;
@@ -31,8 +30,8 @@ namespace Game.Model
 			{
 				Vector3 f;
 				Vector3 r;
-				var k = (1 - 1.0f / 8.0f + index / 4.0f);
-				var a = pi * k;
+				var fovx = pi / 4.0f;
+				var a = (-1 + fovx/2.0f + index * fovx);
 				this.Rotate(forward,right,a,out f,out  r);
 				this.SetViewport(minX + index * step, minY,  step, height, fovx, f, up);
 				renderCallback();

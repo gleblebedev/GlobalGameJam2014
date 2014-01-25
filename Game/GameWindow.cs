@@ -28,18 +28,31 @@ namespace Game
 
 	    private int w;
 
+	    private Spider spider;
+
 	    public GameWindow()
         {
             InitializeComponent();
+			spider = new Spider();
 		    this.materialMap = new MaterialMap();
 
 			materialMap[1] = new WorldMaterial() { Color = Color4.White, Texture = new Texture(LoadTexture("001")) };
-		    var voxelArray = new VoxelArray(32, 32, 32);
+			materialMap[2] = new WorldMaterial() { Color = Color4.Red };
+			materialMap[3] = new WorldMaterial() { Color = Color4.Green };
+			materialMap[4] = new WorldMaterial() { Color = Color4.Blue };
+			var voxelArray = new VoxelArray(32, 32, 32);
 			voxelArray.OutlineBox(1,0,0,0,31,31,31);
-		    this.scene = new GameScene(new World(voxelArray, materialMap ));
+			for (int i = 0; i < 220;++i )
+			{
+				var x = rnd.Next(voxelArray.SizeX);
+				var y = rnd.Next(voxelArray.SizeY);
+				var z = rnd.Next(voxelArray.SizeZ);
+				voxelArray.FillBox((byte)(rnd.Next(3) + 2), x, y,z,x,y,z);
+			}
+		    this.scene = new GameScene(new World(voxelArray, materialMap));
 
         }
-
+		Random rnd = new Random();
 		private static Bitmap LoadTexture(string s1)
 	    {
 			using (var s = typeof(GameWindow).Assembly.GetManifestResourceStream("Game.Textures." + s1 + ".jpg"))

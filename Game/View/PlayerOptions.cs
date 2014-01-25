@@ -47,5 +47,17 @@ namespace Game
 				controlSelection.SelectedIndex = (int)value;
 			}
 		}
+
+		public EyesCount Eyes
+		{
+			get
+			{
+				return (EyesCount)(comboBox1.SelectedIndex);
+			}
+			set
+			{
+				comboBox1.SelectedIndex = (int)value;
+			}
+		}
 	}
 }

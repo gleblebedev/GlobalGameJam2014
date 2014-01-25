@@ -64,6 +64,9 @@ namespace Game.Model
 				{
 					GL.Disable(EnableCap.Texture2D);
 				}
+				GL.CullFace(CullFaceMode.Back);
+				GL.Enable(EnableCap.CullFace);
+				GL.Enable(EnableCap.DepthTest);
 				vertexBuffer.Enable();
 				GL.DrawArrays(BeginMode.Quads, 0, vertexBuffer.Count);
 				vertexBuffer.Disable();
@@ -125,6 +128,8 @@ namespace Game.Model
 							items = vblist[a] = new List<VertexBufferItem>();
 						}
 						var ambientOcclustion = 0.6f;
+
+
 						if (this.voxels[x - 1, y, z] == MaterialMap.Empty)
 						{
 							Color4 c00, c01, c11, c10;
@@ -149,11 +154,11 @@ namespace Game.Model
 								ScaleColor(ref c01, ambientOcclustion);
 								ScaleColor(ref c11, ambientOcclustion);
 							}
-							
-							items.Add(new VertexBufferItem(new Vector3(x, y, z), c00,quadUv[0]));
-							items.Add(new VertexBufferItem(new Vector3(x, y+1, z), c10, quadUv[1]));
-							items.Add(new VertexBufferItem(new Vector3(x, y+1, z+1), c11, quadUv[2]));
-							items.Add(new VertexBufferItem(new Vector3(x, y, z+1), c01, quadUv[3]));
+
+							items.Add(new VertexBufferItem(new Vector3(x, y, z), c00, quadUv[0]));
+							items.Add(new VertexBufferItem(new Vector3(x, y, z + 1), c01, quadUv[3]));
+							items.Add(new VertexBufferItem(new Vector3(x, y + 1, z + 1), c11, quadUv[2]));
+							items.Add(new VertexBufferItem(new Vector3(x, y + 1, z), c10, quadUv[1]));
 						}
 						if (this.voxels[x + 1, y, z] == MaterialMap.Empty)
 						{
@@ -180,7 +185,7 @@ namespace Game.Model
 								ScaleColor(ref c11, ambientOcclustion);
 							}
 
-							items.Add(new VertexBufferItem(new Vector3(x+1, y, z), c00, quadUv[0]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z), c00, quadUv[0]));
 							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z), c10, quadUv[1]));
 							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z + 1), c11, quadUv[2]));
 							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z + 1), c01, quadUv[3]));
@@ -211,11 +216,11 @@ namespace Game.Model
 							}
 
 							items.Add(new VertexBufferItem(new Vector3(x, y, z), c00, quadUv[0]));
-							items.Add(new VertexBufferItem(new Vector3(x+1, y, z), c10, quadUv[1]));
-							items.Add(new VertexBufferItem(new Vector3(x+1, y, z + 1), c11, quadUv[2]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z), c10, quadUv[1]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z + 1), c11, quadUv[2]));
 							items.Add(new VertexBufferItem(new Vector3(x, y, z + 1), c01, quadUv[3]));
 						}
-						if (this.voxels[x, y+1, z] == MaterialMap.Empty)
+						if (this.voxels[x, y + 1, z] == MaterialMap.Empty)
 						{
 							Color4 c00, c01, c11, c10;
 							c00 = c01 = c11 = c10 = color4;
@@ -241,20 +246,20 @@ namespace Game.Model
 							}
 
 							items.Add(new VertexBufferItem(new Vector3(x, y + 1, z), c00, quadUv[0]));
-							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z), c10, quadUv[1]));
-							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z + 1), c11, quadUv[2]));
 							items.Add(new VertexBufferItem(new Vector3(x, y + 1, z + 1), c01, quadUv[3]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z + 1), c11, quadUv[2]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z), c10, quadUv[1]));
 						}
-						if (this.voxels[x, y, z-1] == MaterialMap.Empty)
+						if (this.voxels[x, y, z - 1] == MaterialMap.Empty)
 						{
 							Color4 c00, c01, c11, c10;
 							c00 = c01 = c11 = c10 = color4;
-							if (this.voxels[x - 1, y, z-1] != MaterialMap.Empty)
+							if (this.voxels[x - 1, y, z - 1] != MaterialMap.Empty)
 							{
 								ScaleColor(ref c00, ambientOcclustion);
 								ScaleColor(ref c01, ambientOcclustion);
 							}
-							if (this.voxels[x + 1, y , z - 1] != MaterialMap.Empty)
+							if (this.voxels[x + 1, y, z - 1] != MaterialMap.Empty)
 							{
 								ScaleColor(ref c10, ambientOcclustion);
 								ScaleColor(ref c11, ambientOcclustion);
@@ -271,11 +276,11 @@ namespace Game.Model
 							}
 
 							items.Add(new VertexBufferItem(new Vector3(x, y, z), c00, quadUv[0]));
-							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z), c10, quadUv[1]));
-							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z), c11, quadUv[2]));
 							items.Add(new VertexBufferItem(new Vector3(x, y + 1, z), c01, quadUv[3]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z), c11, quadUv[2]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z), c10, quadUv[1]));
 						}
-						if (this.voxels[x, y, z+1] == MaterialMap.Empty)
+						if (this.voxels[x, y, z + 1] == MaterialMap.Empty)
 						{
 							Color4 c00, c01, c11, c10;
 							c00 = c01 = c11 = c10 = color4;
@@ -299,8 +304,8 @@ namespace Game.Model
 								ScaleColor(ref c01, ambientOcclustion);
 								ScaleColor(ref c11, ambientOcclustion);
 							}
-							items.Add(new VertexBufferItem(new Vector3(x, y , z+1), c00, quadUv[0]));
-							items.Add(new VertexBufferItem(new Vector3(x + 1, y , z + 1), c11, quadUv[1]));
+							items.Add(new VertexBufferItem(new Vector3(x, y, z + 1), c00, quadUv[0]));
+							items.Add(new VertexBufferItem(new Vector3(x + 1, y, z + 1), c11, quadUv[1]));
 							items.Add(new VertexBufferItem(new Vector3(x + 1, y + 1, z + 1), c11, quadUv[2]));
 							items.Add(new VertexBufferItem(new Vector3(x, y + 1, z + 1), c01, quadUv[3]));
 						}

@@ -19,8 +19,10 @@ namespace Game
 			InitializeComponent();
 			playerOptions1.PlayerIndex = 0;
 			playerOptions1.Control = ControlType.WASD;
+			playerOptions1.Eyes = EyesCount.Spider;
 			playerOptions2.PlayerIndex = 0;
 			playerOptions2.Control = ControlType.Gamepad2;
+			playerOptions2.Eyes = EyesCount.OneEye;
 		}
 	}
 }

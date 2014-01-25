@@ -42,6 +42,7 @@ namespace Game
             this.materialMap[3] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("wood")) };
 			this.materialMap[4] = new WorldMaterial { Color = Color4.Blue };
 			var voxelArray = new VoxelArray(32, 32, 32);
+
 			voxelArray.OutlineBox(1, 0, 0, 0, 31, 31, 31);
 			for (int i = 0; i < 1000; ++i)
 			{
@@ -53,6 +54,7 @@ namespace Game
 				var z = index % voxelArray.SizeZ;
 				voxelArray.FillBox((byte)(this.rnd.Next(3) + 2), x, y, z, x, y, z);
 			}
+
 			this.scene = new GameScene(new World(voxelArray, this.materialMap));
 			this.BringToFront();
 			this.Focus();
@@ -122,6 +124,10 @@ namespace Game
 			{
 				this.glControl.MakeCurrent();
 				GL.ClearColor(new Color4(0, 0x20, 0x40, 0));
+				GL.ClearDepth(1.0f);
+				GL.DepthMask(true);
+				GL.DepthFunc(DepthFunction.Less);
+				GL.Viewport(0,0,w,h);
 				GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
 
 				this.scene.Render(this.w, this.h);

@@ -32,6 +32,11 @@ namespace Game.Model
 			
 		}
 
+		public void Deactivate()
+		{
+			
+		}
+
 		#endregion
 	}
 }

@@ -167,6 +167,19 @@ namespace Game.Model
 			}
 		}
 
+		public void ActivateControls()
+		{
+			
+		}
+
+		public void DeactivateControls()
+		{
+			foreach (var playerData in players)
+			{
+				playerData.Controller.Deactivate();
+			}
+		}
+
 		private void RenderImpl(int curPlayer, float movementFactor)
 		{
 			world.Render(1.0f-movementFactor);

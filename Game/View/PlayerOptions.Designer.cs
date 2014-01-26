@@ -68,7 +68,7 @@
 			this.controlSelection.Items.AddRange(new object[] {
             "None (Disabled)",
             "W A S D + Mouse",
-            "Arrows + PgUp PgDown",
+            "I J K L",
             "GamePad 1",
             "GamePad 2"});
 			this.controlSelection.Location = new System.Drawing.Point(66, 18);

@@ -181,6 +181,20 @@ namespace Game.Model
 			}
 			this.mouseLocation = mouseEventArgs.Location;
 		}
+
+		public void ActivateControls()
+		{
+			
+		}
+
+		public void DeactivateControls()
+		{
+			this.left = false;
+			this.right = false;
+			this.forward = false;
+			this.backward = false;
+		}
+
 		public void Render(int width, int height)
 		{
 			this.hasBlockPos = this.world.TraceRay(

@@ -15,5 +15,9 @@ namespace Game.Model
 		void OnKeyUp(KeyEventArgs keyEventArgs);
 
 		void OnMouseMove(MouseEventArgs mouseEventArgs);
+
+		void ActivateControls();
+
+		void DeactivateControls();
 	}
 }

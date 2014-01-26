@@ -167,6 +167,19 @@ namespace Game.Model
 			}
 		}
 
+		public void ActivateControls()
+		{
+			
+		}
+
+		public void DeactivateControls()
+		{
+			foreach (var playerData in players)
+			{
+				playerData.Controller.Deactivate();
+			}
+		}
+
 		private void RenderImpl(int curPlayer, float movementFactor)
 		{
 			world.Render(1.0f-movementFactor);
@@ -188,7 +201,7 @@ namespace Game.Model
 				}
 			}
 			{
-				var otherFactor = fly.IsInMove?1:0;
+				var otherFactor = fly.MovementFactor;
 				var opacity = 1 - Math.Max(
 					movementFactor * (1 - otherFactor), (1 - movementFactor) * otherFactor);
 				var position = fly.Position.Clone();

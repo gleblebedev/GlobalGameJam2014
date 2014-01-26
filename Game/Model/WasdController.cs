@@ -95,5 +95,7 @@ namespace Game.Model
 			}
 			this.mouseLocation = mouseEventArgs.Location;
 		}
+
+		
 	}
 }

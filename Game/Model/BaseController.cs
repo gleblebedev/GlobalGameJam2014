@@ -19,7 +19,15 @@ namespace Game.Model
 		protected bool trunLeft;
 
 		protected bool trunRight;
-
+		public void Deactivate()
+		{
+			this.left = false;
+			this.right = false;
+			this.forward = false;
+			this.backward = false;
+			this.trunLeft = false;
+			this.trunRight = false;
+		}
 		public void Update(TimeSpan dt)
 		{
 			bool isMoving = false;

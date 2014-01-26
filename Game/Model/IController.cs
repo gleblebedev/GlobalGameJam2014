@@ -12,5 +12,7 @@ namespace Game.Model
 		void Update(TimeSpan dt);
 
 		void OnMouseMove(MouseEventArgs mouseEventArgs);
+
+		void Deactivate();
 	}
 }

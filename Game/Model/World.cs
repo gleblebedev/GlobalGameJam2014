@@ -82,33 +82,7 @@ namespace Game.Model
 				GL.DrawArrays(BeginMode.Quads, 0, vertexBuffer.Count);
 				vertexBuffer.Disable();
 			}
-			//for (int i = 0; i < 256; i++)
-			//{
 
-			//	var vertexBufferItems = vblist[i];
-			//	if (vertexBufferItems != null)
-			//	{
-			//		//GL.CullFace(CullFaceMode.Front);
-			//		//GL.Enable(EnableCap.CullFace);
-			//		var worldMaterial = materialMap[i];
-			//		if (worldMaterial.Texture != null)
-			//		{
-			//			worldMaterial.Texture.Set(0);
-			//		}
-			//		else
-			//		{
-			//			GL.Disable(EnableCap.Texture2D);
-			//		}
-			//		//GL.Begin(BeginMode.Quads);
-			//		//foreach (var vertexBufferItem in vertexBufferItems)
-			//		//{
-			//		//	GL.Color4(vertexBufferItem.Color4);
-			//		//	GL.TexCoord2(vertexBufferItem.UV);
-			//		//	GL.Vertex3(vertexBufferItem.Pos);
-			//		//}
-			//		//GL.End();
-			//	}
-			//}
 		}
 
 		private void EnsureVertexBuffers()

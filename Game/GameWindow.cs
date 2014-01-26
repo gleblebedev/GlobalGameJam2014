@@ -37,6 +37,16 @@ namespace Game
 			
 		}
 
+		protected override void OnDeactivate(EventArgs e)
+		{
+			this.scene.DeactivateControls();
+			base.OnDeactivate(e);
+		}
+		protected override void OnActivated(EventArgs e)
+		{
+			this.scene.ActivateControls();
+			base.OnDeactivate(e);
+		}
 		public GameWindow(GameOptions options)
 		{
 			this.InitializeComponent();

@@ -97,14 +97,6 @@ namespace Game.Model
 				var playerData = this.players[index];
 				playerData.Viewport.Position = playerData.Creature.Position;
 				playerData.Viewport.Pitch = playerData.Creature.Pitch;
-				float opacity = 0;
-				if (playerData.Creature.IsInMove)
-				{
-				}
-				else
-				{
-					opacity = 1.0f;
-				}
 				playerData.Viewport.Render(0, yStep * index,width, yStep*(index+1), ()=> this.RenderImpl(index,playerData.MovementFactor));
 			}
 		}
@@ -135,7 +127,7 @@ namespace Game.Model
                       Math.Pow(fly1.Position.Origin.Y - player.Position.Origin.Y, 2) +
                       Math.Pow(fly1.Position.Origin.Z - player.Position.Origin.Z, 2));
 
-            Console.WriteLine(lentgh);
+            //Console.WriteLine(lentgh);
 	        double someMagicValue = 0.8;
 	        if (lentgh < someMagicValue)
 	        {

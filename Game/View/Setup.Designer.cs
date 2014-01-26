@@ -30,10 +30,10 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Setup));
 			this.button1 = new System.Windows.Forms.Button();
-			this.playerOptions1 = new Game.PlayerOptions();
-			this.playerOptions2 = new Game.PlayerOptions();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+			this.playerOptions2 = new Game.PlayerOptions();
+			this.playerOptions1 = new Game.PlayerOptions();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -48,26 +48,6 @@
 			this.button1.Text = "Start!";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
-			// 
-			// playerOptions1
-			// 
-			this.playerOptions1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.playerOptions1.Location = new System.Drawing.Point(13, 13);
-			this.playerOptions1.Name = "playerOptions1";
-			this.playerOptions1.PlayerIndex = 0;
-			this.playerOptions1.Size = new System.Drawing.Size(388, 99);
-			this.playerOptions1.TabIndex = 1;
-			// 
-			// playerOptions2
-			// 
-			this.playerOptions2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.playerOptions2.Location = new System.Drawing.Point(13, 121);
-			this.playerOptions2.Name = "playerOptions2";
-			this.playerOptions2.PlayerIndex = 0;
-			this.playerOptions2.Size = new System.Drawing.Size(388, 99);
-			this.playerOptions2.TabIndex = 2;
 			// 
 			// groupBox1
 			// 
@@ -90,6 +70,27 @@
 			this.richTextBox1.Size = new System.Drawing.Size(236, 188);
 			this.richTextBox1.TabIndex = 0;
 			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+			this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+			// 
+			// playerOptions2
+			// 
+			this.playerOptions2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.playerOptions2.Location = new System.Drawing.Point(13, 121);
+			this.playerOptions2.Name = "playerOptions2";
+			this.playerOptions2.PlayerIndex = 0;
+			this.playerOptions2.Size = new System.Drawing.Size(388, 99);
+			this.playerOptions2.TabIndex = 2;
+			// 
+			// playerOptions1
+			// 
+			this.playerOptions1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.playerOptions1.Location = new System.Drawing.Point(13, 13);
+			this.playerOptions1.Name = "playerOptions1";
+			this.playerOptions1.PlayerIndex = 0;
+			this.playerOptions1.Size = new System.Drawing.Size(388, 99);
+			this.playerOptions1.TabIndex = 1;
 			// 
 			// Setup
 			// 
@@ -101,7 +102,7 @@
 			this.Controls.Add(this.playerOptions1);
 			this.Controls.Add(this.button1);
 			this.Name = "Setup";
-			this.Text = "Setup";
+			this.Text = "GGJ2014: \"Spider-Fly\" Setup";
 			this.groupBox1.ResumeLayout(false);
 			this.ResumeLayout(false);
 

@@ -25,6 +25,8 @@ namespace Game.Model
 
 		public void Render(int minX, int minY, int maxX, int maxY, Action renderCallback)
 		{
+			if(numberOfEyes <= 0)
+				return;
 			int width = Math.Max(1,maxX - minX);
 			int height = Math.Max(1,maxY - minY);
 

@@ -121,8 +121,10 @@
     <value>Spider-Fly!
 
 When you move you can see still things.
-When you are still you can see moving things.
+When you are still you can see things in motion.
 Have fun!
+
+Press F5 for toggle between the editor and the game. Split screen supported.
 
 Code: Gleb Lebedev, Andrey Bogomolov
 3D Models: Dmitriy Sen-say Kharachinetz

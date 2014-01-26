@@ -11,31 +11,22 @@ namespace Game.Model
 	public class GameScene:IScene
 	{
 		private readonly World world;
+	    private readonly GameOptions options;
 
 
-
-		private float a = 0.0f;
+	    private float a = 0.0f;
 
 
 		private Fly fly;
 		private IList<PlayerData> players;
 		public GameScene(World world, GameOptions options)
 		{
-			this.world = world;
-			players = new List<PlayerData>();
-			fly = new Fly(world, this.Spawn(world));
-			foreach (var player in options.Players)
-			{
-				if (player.Control != ControlType.None)
-				{
-					var playerData = new PlayerData() { Viewport = new SpiderScreen() { NumberOfEyes = (int)player.Eyes }, Creature = new Spider(world, this.Spawn(world)) };
-					playerData.Controller = this.CreateController(player.Control,playerData.Creature);
-					players.Add(playerData);
-				}
-			}
+		    this.world = world;
+		    this.options = options;
+            this.Restart();
 		}
 
-		public Model3D Spider { get; set; }
+	    public Model3D Spider { get; set; }
 		public Model3D Fly { get; set; }
 		private IController CreateController(ControlType control, IControlledCreature creature)
 		{
@@ -135,15 +126,41 @@ namespace Game.Model
                       Math.Pow(fly1.Position.Origin.Y - player.Position.Origin.Y, 2) +
                       Math.Pow(fly1.Position.Origin.Z - player.Position.Origin.Z, 2));
 
-            Console.WriteLine(lentgh);
 	        double someMagicValue = 0.8;
 	        if (lentgh < someMagicValue)
 	        {
-	            MessageBox.Show("Gotcha!");
+	            player.Score += 1;
+	            var dialogResult = MessageBox.Show(String.Format("{0} поймал муху! Начать новую игру?", player.Name), "", MessageBoxButtons.OKCancel);
+                if (dialogResult == DialogResult.OK)
+                {
+                    this.Restart();
+                }
+                else
+                {
+                    Application.Exit();
+                }
 	        }
 
 	    }
-		public void OnKeyDown(KeyEventArgs keyEventArgs)
+
+	    private void Restart()
+	    {
+            players = new List<PlayerData>();
+            fly = new Fly(world, this.Spawn(world));
+            int index = 1;
+            foreach (var player in options.Players)
+            {
+                if (player.Control != ControlType.None)
+                {
+
+                    var playerData = new PlayerData() { Viewport = new SpiderScreen() { NumberOfEyes = (int)player.Eyes }, Creature = new Spider(world, this.Spawn(world)) { Name = String.Format("Player {0}", index++) } };
+                    playerData.Controller = this.CreateController(player.Control, playerData.Creature);
+                    players.Add(playerData);
+                }
+            }
+	    }
+
+	    public void OnKeyDown(KeyEventArgs keyEventArgs)
 		{
 			foreach (var playerData in players)
 			{

@@ -13,8 +13,11 @@ namespace Game.Model
 		Vector3 LookDirection { get;  }
 
 		bool IsInMove { get; set; }
+	    int Score { get; set; }
 
-		void Update(TimeSpan dt);
+        string Name { get; set; }
+
+	    void Update(TimeSpan dt);
 
 		void Move(Vector3 direction, float stepScale);
 

@@ -54,8 +54,10 @@ namespace Game.Model
 		}
 
 		public bool IsInMove { get; set; }
+	    public int Score { get; set; }
+	    public string Name { get; set; }
 
-		public float Pitch
+	    public float Pitch
 		{
 			get
 			{

@@ -77,6 +77,7 @@
     <Compile Include="Model\IScene.cs" />
     <Compile Include="Model\IViewports.cs" />
     <Compile Include="Model\MaterialMap.cs" />
+    <Compile Include="Model\Model3D.cs" />
     <Compile Include="Model\PlayerData.cs" />
     <Compile Include="Model\PlayerOptions.cs" />
     <Compile Include="Model\Spider.cs" />
@@ -124,6 +125,7 @@
       <DependentUpon>Setup.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="GameOptions.json" />
+    <EmbeddedResource Include="Models\spider.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -144,6 +146,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Textures\grass.jpg" />
     <EmbeddedResource Include="Textures\wood.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Models\Fly.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

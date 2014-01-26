@@ -118,5 +118,15 @@ namespace Game.Model
 			y = new Vector3(0, 1, 0);
 			z = new Vector3(0, 0, 1);
 		}
+
+		public Matrix4 GetMatrix(float scale)
+		{
+			return new Matrix4(
+				new Vector4(scale * x.X, scale * x.Y, scale * x.Z, 0),
+				new Vector4(scale * y.X, scale * y.Y, scale * y.Z, 0),
+				new Vector4(scale * y.X, scale * z.Y, scale * z.Z, 0),
+				new Vector4(origin.X, origin.Y, origin.Z, 1)
+				);
+		}
 	}
 }

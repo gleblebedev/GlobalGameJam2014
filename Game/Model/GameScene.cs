@@ -16,14 +16,14 @@ namespace Game.Model
 
 		private float a = 0.0f;
 
-		
 
+		private Fly fly;
 		private IList<PlayerData> players;
 		public GameScene(World world, GameOptions options)
 		{
 			this.world = world;
 			players = new List<PlayerData>();
-			
+			fly = new Fly(world, this.Spawn(world));
 			foreach (var player in options.Players)
 			{
 				if (player.Control != ControlType.None)
@@ -35,6 +35,8 @@ namespace Game.Model
 			}
 		}
 
+		public Model3D Spider { get; set; }
+		public Model3D Fly { get; set; }
 		private IController CreateController(ControlType control, IControlledCreature creature)
 		{
 			switch (control)
@@ -84,6 +86,7 @@ namespace Game.Model
 		}
 		Random rnd = new Random();
 
+	
 		#region Implementation of IScene
 
 		public void Render(int width, int height)
@@ -94,7 +97,7 @@ namespace Game.Model
 				var playerData = this.players[index];
 				playerData.Viewport.Position = playerData.Creature.Position;
 				playerData.Viewport.Pitch = playerData.Creature.Pitch;
-				playerData.Viewport.Render(0, yStep * index,width, yStep*(index+1), this.RenderImpl);
+				playerData.Viewport.Render(0, yStep * index,width, yStep*(index+1), ()=> this.RenderImpl(index));
 			}
 		}
 
@@ -105,6 +108,7 @@ namespace Game.Model
 				playerData.Creature.Update(dt);
 				playerData.Controller.Update(dt);
 			}
+			fly.Update(dt);
 		}
 
 	    private void CheckCollision(Fly fly1, IControlledCreature player)
@@ -144,11 +148,27 @@ namespace Game.Model
 			}
 		}
 
-		private void RenderImpl()
+		private void RenderImpl(int curPlayer)
 		{
 			world.Render();
 
-			
+			for (int index = 0; index < this.players.Count; index++)
+			{
+				if (index != curPlayer)
+				{
+					if (Spider != null)
+					{
+						var position = players[index].Creature.Position.Clone();
+						position.Origin -= position.Z * 0.5f;
+						this.Spider.Render(position);
+					}
+				}
+			}
+			{
+				var position = fly.Position.Clone();
+				position.Origin -= position.Z * 0.5f;
+				this.Fly.Render(position);
+			}
 		}
 
 		#endregion

@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 using Game.Model;
+
+using Newtonsoft.Json;
 
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -44,8 +48,12 @@ namespace Game
 			this.materialMap[3] = new WorldMaterial { Color = Color4.White, Texture = new Texture(LoadTexture("wood")) };
 			this.materialMap[4] = new WorldMaterial { Color = Color4.Blue };
 
+			this.spider = LoadModel("spider");
+			this.fly = LoadModel("Fly");
+
 			var world = new World(options.VoxelArray, this.materialMap);
-			this.gameScene = this.scene = new GameScene(world, options);
+			this.gameScene = this.scene = new GameScene(world, options) {Spider = spider, Fly = fly};
+			
 			this.editorScene = new EditorScene(world,options.VoxelArray);
 			this.BringToFront();
 			this.Focus();
@@ -72,7 +80,17 @@ namespace Game
 		#region Methods
 
 
-
+		static Model3D LoadModel(string s1)
+		{
+			using (var s = typeof(GameWindow).Assembly.GetManifestResourceStream("Game.Models." + s1 + ".json"))
+			{
+				var ms = new MemoryStream();
+				s.CopyTo(ms);
+				ms.Flush();
+				var value = Encoding.UTF8.GetString(ms.ToArray()).Trim((char)65279);
+				return (Model3D)JsonConvert.DeserializeObject(value, typeof(Model3D));
+			}
+		}
 		private static Bitmap LoadTexture(string s1)
 		{
 			using (var s = typeof(GameWindow).Assembly.GetManifestResourceStream("Game.Textures." + s1 + ".jpg"))
@@ -103,6 +121,10 @@ namespace Game
 		private IScene gameScene;
 
 		private IScene editorScene;
+
+		private Model3D fly;
+
+		private Model3D spider;
 
 		private void RenderScene(object sender, PaintEventArgs e)
 		{

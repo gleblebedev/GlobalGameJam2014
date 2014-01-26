@@ -9,66 +9,85 @@ namespace Game.Model
         public Basis Position { get; private set; }
         public float Pitch { get; set; }
 
-        private Vector3 directionMovement;
         private Random random = new Random();
 
         private TimeSpan timeOfMovement = new TimeSpan(0, 0, 0, 5);
 
+	    private Action<TimeSpan> think;
 
-        public Fly(World world)
+	    private Vector3 targert;
+
+	    private Vector3 targertN;
+
+	    public Fly(World world, Vector3 pos)
         {
             this.world = world;
-            this.Position = new Basis(new Vector3(10, 10, 10));
-            this.Position.Origin = new Vector3(10, 10, 10);
+            this.Position = new Basis(pos);
+	        think = Sit;
             this.ChooseDirection();
         }
+		public void Sit(TimeSpan dt)
+		{
+			timeOfMovement = timeOfMovement - dt;
+			if (timeOfMovement.Ticks <= 0)
+			{
+				this.ChooseDirection();
+				think = this.DoFly;
+			}
+		}
+		public void DoFly(TimeSpan dt)
+		{
+			var d = targert - Position.Origin;
+			var l = d.Length;
+			float speed = 10.0f;
+			var step = (float)dt.TotalSeconds * speed;
+			if (step >= l)
+			{
+				this.Position.Origin = targert;
+				var y = RandomVector();
+				var x = Vector3.Cross(y, targertN);
+				this.Position.SetRotation(x, targertN);
+				think = this.Sit;
+				timeOfMovement = TimeSpan.FromSeconds(random.NextDouble() * 25.0f);
+				return;
+			}
+			else
+			{
+				this.Position.Origin += d*(step / l);
+				this.Position.SetRotation(d,new Vector3(0,0,1));
+			}
+		}
 
-        public void Update(TimeSpan dt)
-        {
-            timeOfMovement = timeOfMovement - dt;
-            if (timeOfMovement.Ticks > 0)
-                this.Position.Origin += directionMovement;
-            else
-            {
-                timeOfMovement = new TimeSpan(0, 0, 0, 5);
-                this.ChooseDirection();
-            }
+	    public void Update(TimeSpan dt)
+	    {
+		    think(dt);
         }
-
+		Vector3 RandomVector()
+		{
+			var xComponent = (float)random.NextDouble() - 0.5f ;
+			var yComponent = (float)random.NextDouble() - 0.5f ;
+			var zComponent = (float)random.NextDouble() - 0.5f ;
+			return new Vector3(xComponent,yComponent,zComponent);
+		}
         private void ChooseDirection()
         {
-            var xComponent = random.Next(-1, 1);
-            var maxPath = 10;
-            if (Position.Origin.X + maxPath > world.SizeX)
-            {
-                xComponent = random.Next(-1, 0);
-            }
-            else if (Position.Origin.X < maxPath)
-            {
-                xComponent = random.Next(0, 1);
-            }
-
-            var yComponent = random.Next(-1, 1);
-            if (Position.Origin.Y + maxPath > world.SizeY)
-            {
-                yComponent = random.Next(-1, 0);
-            }
-            else if(Position.Origin.Y < maxPath)
-            {
-                yComponent = random.Next(0, 1);
-            }
-
-            var zComponent = random.Next(-1, 1);
-            if (Position.Origin.Z + maxPath > world.SizeZ)
-            {
-                zComponent = random.Next(-1, 0);
-            }
-            else if (Position.Origin.Z < maxPath)
-            {
-                zComponent = random.Next(-1, 0);
-            }
-
-            this.directionMovement = new Vector3(xComponent, yComponent, zComponent);
+	        var r = RandomVector() + Position.Z * 0.5f;
+			r.NormalizeFast();
+	        var from = this.Position.Origin;
+			var to = from + r*30.0f;
+	        to.X = Math.Min(world.SizeX - 1, Math.Max(1, to.X));
+			to.Y = Math.Min(world.SizeY - 1, Math.Max(1, to.Y));
+			to.Z = Math.Min(world.SizeZ - 1, Math.Max(1, to.Z));
+			Vector3 n;
+	        if (!world.TraceBox(from,ref to,out n))
+	        {
+		        think = this.Sit;
+		        timeOfMovement = TimeSpan.FromSeconds(random.NextDouble() * 5.0f);
+				return;
+	        }
+	        var pos = to + n * 0.5f;
+	        this.targert = pos;
+	        this.targertN = n;
 
         }
     }

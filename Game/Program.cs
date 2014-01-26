@@ -23,6 +23,8 @@ namespace Game
         [STAThread]
         static void Main()
         {
+	        File.WriteAllBytes("1.json", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new Model3D() { Geometries = new Geometry3D[] { } })));
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

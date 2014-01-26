@@ -123,7 +123,7 @@ namespace Game.Model
 	        if (lentgh < someMagicValue)
 	        {
 	            player.Score += 1;
-	            var dialogResult = MessageBox.Show(String.Format("{0} поймал муху! Начать новую игру?", player.Name), "", MessageBoxButtons.OKCancel);
+	            var dialogResult = MessageBox.Show(String.Format("{0} got the fly! Do you want to play again?", player.Name), "", MessageBoxButtons.OKCancel);
                 if (dialogResult == DialogResult.OK)
                 {
                     this.Restart();

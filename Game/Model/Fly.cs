@@ -27,15 +27,19 @@ namespace Game.Model
 
 	    private Vector3 targertN;
 
+	    public float MovementFactor = 0;
+
 	    public Fly(World world, Vector3 pos)
         {
             this.world = world;
             this.Position = new Basis(pos);
 	        think = Sit;
+		    MovementFactor = 0;
             this.ChooseDirection();
         }
 		public void Sit(TimeSpan dt)
 		{
+			MovementFactor = Math.Max(0, MovementFactor -(float) dt.TotalSeconds);
 			timeOfMovement = timeOfMovement - dt;
 			if (timeOfMovement.Ticks <= 0)
 			{
@@ -45,6 +49,8 @@ namespace Game.Model
 		}
 		public void DoFly(TimeSpan dt)
 		{
+			MovementFactor = Math.Min(1, MovementFactor + (float)dt.TotalSeconds);
+
 			var d = targert - Position.Origin;
 			var l = d.Length;
 			float speed = 10.0f;

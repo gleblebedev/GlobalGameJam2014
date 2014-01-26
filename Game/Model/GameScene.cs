@@ -115,8 +115,10 @@ namespace Game.Model
 			{
 				playerData.Creature.Update(dt);
 				playerData.Controller.Update(dt);
+			    CheckCollision(fly, playerData.Creature);
 			}
 			fly.Update(dt);
+            
 		}
 
 	    private void CheckCollision(Fly fly1, IControlledCreature player)
@@ -125,11 +127,12 @@ namespace Game.Model
                       Math.Pow(fly1.Position.Origin.Y - player.Position.Origin.Y, 2) +
                       Math.Pow(fly1.Position.Origin.Z - player.Position.Origin.Z, 2));
 
-	        double someMagicValue = 5;
+            Console.WriteLine(lentgh);
+	        double someMagicValue = 0.8;
 	        if (lentgh < someMagicValue)
-            {
-                //Мы выиграли
-            }
+	        {
+	            MessageBox.Show("Gotcha!");
+	        }
 
 	    }
 		public void OnKeyDown(KeyEventArgs keyEventArgs)

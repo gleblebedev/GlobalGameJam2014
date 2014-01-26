@@ -32,7 +32,7 @@ namespace Game.Model
 	{
 		public Geometry3D[] Geometries { get; set; }
 
-		public void Render(Basis position)
+		public void Render(Basis position, float opacity)
 		{
 			var geo = Geometries.FirstOrDefault();
 			if (geo == null)
@@ -47,13 +47,24 @@ namespace Game.Model
 					GL.PushMatrix();
 					var m = position.GetMatrix(0.01f);
 					GL.MultMatrix(ref m);
+					if (opacity > 0)
+					{
+						GL.Enable(EnableCap.Blend);
+						GL.BlendFunc(BlendingFactorSrc.SrcAlpha,BlendingFactorDest.OneMinusSrcAlpha);
+					}
 					GL.Begin(BeginMode.Triangles);
-					GL.Color4(Color4.Black);
+					if (opacity > 0)
+					{
+						GL.Color4(new Color4(0.0f, 0.0f, 0.0f, 1.0f - opacity));
+					}
+					else
+						GL.Color4(new Color4(0.0f, 0.0f, 0.0f, 1.0f));
 					foreach (var i in posIB.Data)
 					{
 						GL.Vertex3(posVB.Data[i]);
 					}
 					GL.End();
+					GL.Disable(EnableCap.Blend);
 					GL.PopMatrix();
 				}
 			}

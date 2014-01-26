@@ -54,19 +54,26 @@ namespace Game.Model
 			return materialMap[voxels[x, y, z]];
 		}
 
-		public void Render()
+		public void Render(float opacity)
 		{
 			EnsureVertexBuffers();
 			foreach (var vertexBuffer in vbs)
 			{
 				var worldMaterial = materialMap[vertexBuffer.material];
-				if (worldMaterial.Texture != null)
+				if (opacity > 0)
 				{
-					worldMaterial.Texture.Set(0);
+					GL.Disable(EnableCap.Texture2D);
 				}
 				else
 				{
-					GL.Disable(EnableCap.Texture2D);
+					if (worldMaterial.Texture != null)
+					{
+						worldMaterial.Texture.Set(0);
+					}
+					else
+					{
+						GL.Disable(EnableCap.Texture2D);
+					}
 				}
 				GL.CullFace(CullFaceMode.Back);
 				GL.Enable(EnableCap.CullFace);

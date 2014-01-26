@@ -97,7 +97,15 @@ namespace Game.Model
 				var playerData = this.players[index];
 				playerData.Viewport.Position = playerData.Creature.Position;
 				playerData.Viewport.Pitch = playerData.Creature.Pitch;
-				playerData.Viewport.Render(0, yStep * index,width, yStep*(index+1), ()=> this.RenderImpl(index));
+				float opacity = 0;
+				if (playerData.Creature.IsInMove)
+				{
+				}
+				else
+				{
+					opacity = 1.0f;
+				}
+				playerData.Viewport.Render(0, yStep * index,width, yStep*(index+1), ()=> this.RenderImpl(index,opacity));
 			}
 		}
 
@@ -148,9 +156,9 @@ namespace Game.Model
 			}
 		}
 
-		private void RenderImpl(int curPlayer)
+		private void RenderImpl(int curPlayer, float opacity)
 		{
-			world.Render();
+			world.Render(opacity);
 
 			for (int index = 0; index < this.players.Count; index++)
 			{
@@ -160,14 +168,14 @@ namespace Game.Model
 					{
 						var position = players[index].Creature.Position.Clone();
 						position.Origin -= position.Z * 0.5f;
-						this.Spider.Render(position);
+						this.Spider.Render(position,0.5f);
 					}
 				}
 			}
 			{
 				var position = fly.Position.Clone();
 				position.Origin -= position.Z * 0.5f;
-				this.Fly.Render(position);
+				this.Fly.Render(position, 0.5f);
 			}
 		}
 

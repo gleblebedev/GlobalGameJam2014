@@ -234,7 +234,7 @@ namespace Game.Model
 
 		private void RenderImpl()
 		{
-			this.world.Render();
+			this.world.Render(0);
 
 			GL.DepthMask(false);
 			GL.Disable(EnableCap.DepthTest);

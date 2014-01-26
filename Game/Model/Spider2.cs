@@ -64,7 +64,9 @@ namespace Game.Model
             }
         }
 
-        public void Update(TimeSpan dt)
+	    public bool IsInMove { get; set; }
+
+	    public void Update(TimeSpan dt)
         {
             throw new NotImplementedException();
         }

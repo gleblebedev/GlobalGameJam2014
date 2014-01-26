@@ -53,6 +53,8 @@ namespace Game.Model
 			}
 		}
 
+		public bool IsInMove { get; set; }
+
 		public float Pitch
 		{
 			get

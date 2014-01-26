@@ -48,6 +48,7 @@ namespace Game.Model
 			{
 				this.Disable();
 				GL.DeleteBuffer(buffer);
+				buffer = 0;
 			}
 		}
 	}

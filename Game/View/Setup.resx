@@ -117,4 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>Spider-Fly!
+
+When you move you can see still things.
+When you are still you can see moving things.
+Have fun!
+
+Code: Gleb Lebedev, Andrey Bogomolov
+3D Models: Dmitriy Sen-say Kharachinetz
+
+support: gleb@gleblebedev.com</value>
+  </data>
 </root>

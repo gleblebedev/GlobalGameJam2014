@@ -133,8 +133,8 @@ namespace Game.Model
 	        {
 	            MessageBox.Show("Gotcha!");
 	        }
-
 	    }
+
 		public void OnKeyDown(KeyEventArgs keyEventArgs)
 		{
 			foreach (var playerData in players)

@@ -28,16 +28,20 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Setup));
 			this.button1 = new System.Windows.Forms.Button();
 			this.playerOptions1 = new Game.PlayerOptions();
 			this.playerOptions2 = new Game.PlayerOptions();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// button1
 			// 
 			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.button1.Location = new System.Drawing.Point(197, 226);
+			this.button1.Location = new System.Drawing.Point(575, 228);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 0;
@@ -52,7 +56,7 @@
 			this.playerOptions1.Location = new System.Drawing.Point(13, 13);
 			this.playerOptions1.Name = "playerOptions1";
 			this.playerOptions1.PlayerIndex = 0;
-			this.playerOptions1.Size = new System.Drawing.Size(259, 99);
+			this.playerOptions1.Size = new System.Drawing.Size(388, 99);
 			this.playerOptions1.TabIndex = 1;
 			// 
 			// playerOptions2
@@ -62,19 +66,43 @@
 			this.playerOptions2.Location = new System.Drawing.Point(13, 121);
 			this.playerOptions2.Name = "playerOptions2";
 			this.playerOptions2.PlayerIndex = 0;
-			this.playerOptions2.Size = new System.Drawing.Size(259, 99);
+			this.playerOptions2.Size = new System.Drawing.Size(388, 99);
 			this.playerOptions2.TabIndex = 2;
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox1.Controls.Add(this.richTextBox1);
+			this.groupBox1.Location = new System.Drawing.Point(408, 13);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(242, 207);
+			this.groupBox1.TabIndex = 3;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "About";
+			// 
+			// richTextBox1
+			// 
+			this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.richTextBox1.Location = new System.Drawing.Point(3, 16);
+			this.richTextBox1.Name = "richTextBox1";
+			this.richTextBox1.ReadOnly = true;
+			this.richTextBox1.Size = new System.Drawing.Size(236, 188);
+			this.richTextBox1.TabIndex = 0;
+			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
 			// 
 			// Setup
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(284, 261);
+			this.ClientSize = new System.Drawing.Size(662, 263);
+			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.playerOptions2);
 			this.Controls.Add(this.playerOptions1);
 			this.Controls.Add(this.button1);
 			this.Name = "Setup";
 			this.Text = "Setup";
+			this.groupBox1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -84,5 +112,7 @@
 		private System.Windows.Forms.Button button1;
 		private PlayerOptions playerOptions1;
 		private PlayerOptions playerOptions2;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.RichTextBox richTextBox1;
 	}
 }

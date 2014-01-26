@@ -33,6 +33,13 @@ namespace Game.Model
 
 			var pi = (float)Math.PI;
 
+			var fovx = 2.0f * pi / this.NumberOfEyes;
+			var maxfov = pi - 0.1f;
+			if (fovx > maxfov)
+			{
+				fovx = maxfov;
+			}
+
 
 		    var step = width / this.NumberOfEyes;
 			var maxheight = step * 1.5f;
@@ -46,7 +53,6 @@ namespace Game.Model
 			{
 				Vector3 f;
 				Vector3 r;
-				var fovx = pi / 4.0f;
 				var wholeArea = this.NumberOfEyes * fovx;
 				var offset = - wholeArea * 0.5f + fovx*0.5f;
 				var a = - (index * fovx + offset);

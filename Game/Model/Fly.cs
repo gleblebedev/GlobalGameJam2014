@@ -9,7 +9,15 @@ namespace Game.Model
         public Basis Position { get; private set; }
         public float Pitch { get; set; }
 
-        private Random random = new Random();
+	    public bool IsInMove
+	    {
+		    get
+		    {
+			    return think == this.DoFly;
+		    }
+	    }
+
+	    private Random random = new Random();
 
         private TimeSpan timeOfMovement = new TimeSpan(0, 0, 0, 5);
 

@@ -116,18 +116,22 @@ namespace Game.Model
 					RemoveElement();
 					keyEventArgs.Handled = true;
 					break;
+                case Keys.U:
 				case Keys.NumPad1:
 					SetElement(1);
 					keyEventArgs.Handled = true;
 					break;
+                case Keys.I:
 				case Keys.NumPad2:
 					SetElement(2);
 					keyEventArgs.Handled = true;
 					break;
+                case Keys.O:
 				case Keys.NumPad3:
 					SetElement(3);
 					keyEventArgs.Handled = true;
 					break;
+                case Keys.P:
 				case Keys.NumPad4:
 					SetElement(4);
 					keyEventArgs.Handled = true;

@@ -105,7 +105,7 @@ namespace Game.Model
 				{
 					opacity = 1.0f;
 				}
-				playerData.Viewport.Render(0, yStep * index,width, yStep*(index+1), ()=> this.RenderImpl(index,opacity));
+				playerData.Viewport.Render(0, yStep * index,width, yStep*(index+1), ()=> this.RenderImpl(index,playerData.MovementFactor));
 			}
 		}
 
@@ -116,6 +116,14 @@ namespace Game.Model
 				playerData.Creature.Update(dt);
 				playerData.Controller.Update(dt);
 			    CheckCollision(fly, playerData.Creature);
+				if (playerData.Creature.IsInMove)
+				{
+					playerData.MovementFactor = Math.Min(1,playerData.MovementFactor + (float)dt.TotalSeconds);
+				}
+				else
+				{
+					playerData.MovementFactor = Math.Max(0, playerData.MovementFactor - (float)dt.TotalSeconds);
+				}
 			}
 			fly.Update(dt);
             
@@ -159,9 +167,9 @@ namespace Game.Model
 			}
 		}
 
-		private void RenderImpl(int curPlayer, float opacity)
+		private void RenderImpl(int curPlayer, float movementFactor)
 		{
-			world.Render(opacity);
+			world.Render(1.0f-movementFactor);
 
 			for (int index = 0; index < this.players.Count; index++)
 			{
@@ -169,16 +177,23 @@ namespace Game.Model
 				{
 					if (Spider != null)
 					{
-						var position = players[index].Creature.Position.Clone();
+						var playerData = players[index];
+						var position = playerData.Creature.Position.Clone();
 						position.Origin -= position.Z * 0.5f;
-						this.Spider.Render(position,0.5f);
+						var otherFactor = playerData.MovementFactor;
+						var opacity = 1-Math.Max(
+							movementFactor * (1 - otherFactor), (1 - movementFactor) * otherFactor);
+						this.Spider.Render(position, opacity);
 					}
 				}
 			}
 			{
+				var otherFactor = fly.IsInMove?1:0;
+				var opacity = 1 - Math.Max(
+					movementFactor * (1 - otherFactor), (1 - movementFactor) * otherFactor);
 				var position = fly.Position.Clone();
 				position.Origin -= position.Z * 0.5f;
-				this.Fly.Render(position, 0.5f);
+				this.Fly.Render(position, opacity);
 			}
 		}
 

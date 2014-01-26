@@ -34,6 +34,8 @@ namespace Game.Model
 
 		public void Render(Basis position, float opacity)
 		{
+			if (opacity >= 1)
+				return;
 			var geo = Geometries.FirstOrDefault();
 			if (geo == null)
 				return;

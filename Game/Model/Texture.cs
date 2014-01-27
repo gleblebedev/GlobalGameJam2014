@@ -38,6 +38,15 @@ namespace Game.Model
 			}
 			GL.BindTexture(TextureTarget.Texture2D, this.id);
 			GL.Enable(EnableCap.Texture2D);
+			GL.ActiveTexture(TextureUnit.Texture0);
+		}
+
+		public void Unset(int i)
+		{
+			GL.ActiveTexture(TextureUnit.Texture0 + i);
+			GL.BindTexture(TextureTarget.Texture2D, 0);
+			GL.Disable(EnableCap.Texture2D);
+			GL.ActiveTexture(TextureUnit.Texture0);
 		}
 	}
 }

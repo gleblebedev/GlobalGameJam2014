@@ -61,7 +61,7 @@ namespace Game
 			this.spider = LoadModel("spider");
 			this.fly = LoadModel("Fly");
 
-			var world = new World(options.VoxelArray, this.materialMap);
+			var world = new World(options.VoxelArray, this.materialMap, new Texture(LoadTexture("gradient")));
 			this.gameScene = this.scene = new GameScene(world, options) {Spider = spider, Fly = fly};
 			
 			this.editorScene = new EditorScene(world,options.VoxelArray);

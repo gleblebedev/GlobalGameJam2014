@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Game.Model
 {
@@ -8,7 +9,7 @@ namespace Game.Model
 
         float Pitch { get; set; }
 
-        void Update(TimeSpan dt);
+		void Update(TimeSpan dt, IEnumerable<IControlledCreature> players);
 
     }
 }

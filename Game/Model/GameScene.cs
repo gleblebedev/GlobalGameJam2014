@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 using OpenTK;
@@ -108,7 +109,7 @@ namespace Game.Model
 					playerData.MovementFactor = Math.Max(0, playerData.MovementFactor - (float)dt.TotalSeconds);
 				}
 			}
-			fly.Update(dt);
+			fly.Update(dt, players.Select(x=>x.Creature));
             
 		}
 

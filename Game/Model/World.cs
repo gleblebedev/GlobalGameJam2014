@@ -16,14 +16,17 @@ namespace Game.Model
 
 		private readonly MaterialMap materialMap;
 
+		private readonly Texture gradient;
+
 		private List<VertexBuffer> vbs;
 
 		private int voxelVersion = -1;
 
-		public World(VoxelArray voxels,MaterialMap materialMap)
+		public World(VoxelArray voxels, MaterialMap materialMap, Texture gradient)
 		{
 			this.voxels = voxels;
 			this.materialMap = materialMap;
+			this.gradient = gradient;
 		}
 
 		public int SizeX
@@ -60,7 +63,9 @@ namespace Game.Model
 			foreach (var vertexBuffer in vbs)
 			{
 				var worldMaterial = materialMap[vertexBuffer.material];
-				if (opacity > 0)
+
+				var threshold = 0.6f;
+				if (opacity > threshold)
 				{
 					GL.Disable(EnableCap.Texture2D);
 				}
@@ -75,11 +80,43 @@ namespace Game.Model
 						GL.Disable(EnableCap.Texture2D);
 					}
 				}
+
 				GL.CullFace(CullFaceMode.Back);
 				GL.Enable(EnableCap.CullFace);
 				GL.Enable(EnableCap.DepthTest);
 				vertexBuffer.Enable();
+				if (opacity > 0 && opacity < threshold)
+				{
+					gradient.Set(1);
+					GL.ActiveTexture(TextureUnit.Texture1);
+					GL.MultiTexCoord2(TextureUnit.Texture1, Math.Min(opacity, threshold), opacity);
+					GL.MultiTexCoord2(TextureUnit.Texture2, Math.Min(opacity, threshold), opacity);
+
+					GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)TextureEnvModeCombine.Add);
+
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (int)All.Combine);
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.CombineRgb, (int)TextureEnvModeCombine.Interpolate);
+
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.Source0Rgb, (int)TextureEnvModeSource.Constant);
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.Operand0Rgb, (int)TextureEnvModeOperandRgb.SrcColor);
+
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.Src1Rgb, (int)TextureEnvModeSource.Texture0);
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.Operand1Rgb, (int)TextureEnvModeOperandRgb.SrcColor);
+
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvColor, new Color4(opacity, opacity, opacity, opacity));
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.Src2Rgb, (int)TextureEnvModeSource.Constant);
+					//GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.Operand2Rgb, (int)TextureEnvModeOperandRgb.SrcColor);
+
+
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+				}
+		
 				GL.DrawArrays(BeginMode.Quads, 0, vertexBuffer.Count);
+				if (opacity > 0)
+				{
+					GL.ActiveTexture(TextureUnit.Texture1);
+					gradient.Unset(1);
+				}
 				vertexBuffer.Disable();
 			}
 

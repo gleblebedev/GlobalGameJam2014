@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 using OpenTK;
 
 namespace Game.Model
@@ -21,7 +23,7 @@ namespace Game.Model
 
         private TimeSpan timeOfMovement = new TimeSpan(0, 0, 0, 5);
 
-	    private Action<TimeSpan> think;
+	    private Action<TimeSpan, IEnumerable<IControlledCreature>> think;
 
 	    private Vector3 targert;
 
@@ -37,17 +39,26 @@ namespace Game.Model
 		    MovementFactor = 0;
             this.ChooseDirection();
         }
-		public void Sit(TimeSpan dt)
+		public void Sit(TimeSpan dt, IEnumerable<IControlledCreature> players)
 		{
 			MovementFactor = Math.Max(0, MovementFactor -(float) dt.TotalSeconds);
 			timeOfMovement = timeOfMovement - dt;
-			if (timeOfMovement.Ticks <= 0)
+
+			var timeToFly = timeOfMovement.Ticks <= 0;
+			foreach (var creature in players)
+			{
+				var d = creature.Position.Origin - this.Position.Origin;
+				var dot = Vector3.Dot(d,this.Position.X);
+				//fly spotted spider
+				if (dot >= 0 && dot < 3) timeToFly = true;
+			}
+			if (timeToFly)
 			{
 				this.ChooseDirection();
 				think = this.DoFly;
 			}
 		}
-		public void DoFly(TimeSpan dt)
+		public void DoFly(TimeSpan dt, IEnumerable<IControlledCreature> players)
 		{
 			MovementFactor = Math.Min(1, MovementFactor + (float)dt.TotalSeconds);
 
@@ -72,9 +83,9 @@ namespace Game.Model
 			}
 		}
 
-	    public void Update(TimeSpan dt)
+	    public void Update(TimeSpan dt, IEnumerable<IControlledCreature> players)
 	    {
-		    think(dt);
+			think(dt, players);
         }
 		Vector3 RandomVector()
 		{

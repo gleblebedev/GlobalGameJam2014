@@ -50,7 +50,7 @@ namespace Game.Model
 				var d = creature.Position.Origin - this.Position.Origin;
 				var dot = Vector3.Dot(d,this.Position.X);
 				//fly spotted spider
-				if (dot >= 0 && dot < 3) timeToFly = true;
+				if (dot >= -0.2f && dot < 3) timeToFly = true;
 			}
 			if (timeToFly)
 			{

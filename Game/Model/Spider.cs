@@ -26,7 +26,7 @@ namespace Game.Model
 
 		private Basis position = new Basis();
 
-		private float speed = 3.0f;
+		private float speed = 9.0f;
 
 		#endregion
 
@@ -138,7 +138,7 @@ namespace Game.Model
 			{
 				return;
 			}
-			this.Position.Rotate(this.Position.Z, angle);
+			this.Position.Rotate(this.Position.Z, angle * 2.0f);
 		}
 
 		public void Update(TimeSpan dt)

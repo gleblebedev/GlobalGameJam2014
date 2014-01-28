@@ -95,6 +95,10 @@ namespace Game.Model
 
 		public void Update(TimeSpan dt)
 		{
+			if (dt.TotalSeconds > 0.1)
+			{
+				dt = TimeSpan.FromSeconds(0.1);
+			}
 			foreach (var playerData in players)
 			{
 				playerData.Creature.Update(dt);
@@ -115,9 +119,9 @@ namespace Game.Model
 
 	    private void CheckCollision(Fly fly1, IControlledCreature player)
 	    {
-            var lentgh = Math.Sqrt(Math.Pow(fly1.Position.Origin.X - player.Position.Origin.X, 2) +
-                      Math.Pow(fly1.Position.Origin.Y - player.Position.Origin.Y, 2) +
-                      Math.Pow(fly1.Position.Origin.Z - player.Position.Origin.Z, 2));
+			if (fly1.IsInMove)
+				return;
+		    var lentgh = (fly1.Position.Origin - player.Position.Origin).LengthFast;
 
             //Console.WriteLine(lentgh);
 	        double someMagicValue = 0.8;

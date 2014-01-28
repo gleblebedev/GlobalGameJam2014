@@ -31,10 +31,13 @@ namespace Game.Model
 
 		public override void Update(TimeSpan dt)
 		{
-			this.Spider.IsInMove = false;
+			var state = OpenTK.Input.GamePad.GetState(index);
 			base.Update(dt);
 
-			var state = OpenTK.Input.GamePad.GetState(index);
+			forward = state.DPad.IsUp;
+			backward = state.DPad.IsDown;
+			trunLeft = state.DPad.IsLeft;
+			trunRight = state.DPad.IsRight;
 			if (!state.IsConnected)
 				return;
 			var walk = state.ThumbSticks.Left.Y;
@@ -55,7 +58,7 @@ namespace Game.Model
 			}
 			if (pitch != 0)
 			{
-				this.Spider.Pitch += (pitch * (float)dt.TotalSeconds);
+				this.Spider.Pitch += -(pitch * (float)dt.TotalSeconds);
 			}
 		}
 

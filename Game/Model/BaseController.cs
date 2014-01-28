@@ -6,7 +6,7 @@ namespace Game.Model
 {
 	public class BaseController 
 	{
-		protected readonly IControlledCreature spider;
+		private readonly IControlledCreature spider;
 
 		protected bool left;
 
@@ -19,6 +19,15 @@ namespace Game.Model
 		protected bool trunLeft;
 
 		protected bool trunRight;
+
+		public IControlledCreature Spider
+		{
+			get
+			{
+				return this.spider;
+			}
+		}
+
 		public void Deactivate()
 		{
 			this.left = false;
@@ -28,7 +37,7 @@ namespace Game.Model
 			this.trunLeft = false;
 			this.trunRight = false;
 		}
-		public void Update(TimeSpan dt)
+		public virtual void Update(TimeSpan dt)
 		{
 			bool isMoving = false;
 			var scale = (float)dt.TotalSeconds;

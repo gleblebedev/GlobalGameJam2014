@@ -89,6 +89,7 @@ namespace Game.Model
         }
 		Vector3 RandomVector()
 		{
+			
 			var xComponent = (float)random.NextDouble() - 0.5f ;
 			var yComponent = (float)random.NextDouble() - 0.5f ;
 			var zComponent = (float)random.NextDouble() - 0.5f ;
@@ -96,8 +97,13 @@ namespace Game.Model
 		}
         private void ChooseDirection()
         {
-	        var r = RandomVector() + Position.Z * 0.5f;
-			r.NormalizeFast();
+	        Vector3 r;
+	        do
+	        {
+		        r = this.RandomVector() + this.Position.Z * 0.5f;
+		        r.NormalizeFast();
+	        }
+	        while (float.IsNaN(r.X));
 	        var from = this.Position.Origin;
 			var to = from + r*30.0f;
 	        to.X = Math.Min(world.SizeX - 1, Math.Max(1, to.X));
@@ -106,13 +112,25 @@ namespace Game.Model
 			Vector3 n;
 	        if (!world.TraceBox(from,ref to,out n))
 	        {
-		        think = this.Sit;
-		        timeOfMovement = TimeSpan.FromSeconds(random.NextDouble() * 5.0f);
-				return;
+			    think = this.Sit;
+			    timeOfMovement = TimeSpan.FromSeconds(random.NextDouble() * 0.2f);
 	        }
-	        var pos = to + n * 0.5f;
-	        this.targert = pos;
-	        this.targertN = n;
+			int x = (int)Math.Floor(to.X );
+		        int y =(int)Math.Floor(to.Y);
+		        int z =(int)Math.Floor(to.Z );
+		        int x2 =(int)Math.Floor(to.X - n.X );
+		        int y2 =(int)Math.Floor(to.Y - n.Y);
+		        int z2 =(int)Math.Floor(to.Z - n.Z);
+				if (world.IsEmpty(x, y, z) && !world.IsEmpty(x2, y2, z2))
+				{
+
+					var pos = new Vector3(x+0.5f,y+0.5f,z+0.5f);
+					this.targert = pos;
+					this.targertN = n;
+					return;
+				}
+				think = this.Sit;
+				timeOfMovement = TimeSpan.FromSeconds(random.NextDouble() * 0.2f);
 
         }
     }

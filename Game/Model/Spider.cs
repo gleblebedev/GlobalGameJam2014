@@ -150,7 +150,7 @@ namespace Game.Model
 				var kEnd = (this.animationProgress);
 				this.Position.Origin = this.animationStart.Origin * kStart + this.animationEnd.Origin * kEnd;
 				var n = this.animationStart.Z * kStart + this.animationEnd.Z * kEnd;
-
+				this.pitch = this.pitch * 0.7f;
 				var x = Vector3.Cross(this.Position.Y, n);
 				if (float.IsNaN(x.X) || x.LengthSquared <= 1e-6)
 				{

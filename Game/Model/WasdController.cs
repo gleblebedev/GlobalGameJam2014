@@ -86,10 +86,10 @@ namespace Game.Model
 					var dy = mouseEventArgs.Location.Y - mouseLocation.Value.Y;
 					var dx = mouseEventArgs.Location.X - mouseLocation.Value.X;
 					if (dy != 0)
-						spider.Pitch -= dy*0.002f;
+						this.Spider.Pitch -= dy*0.002f;
 					if (dx != 0)
 					{
-						spider.Rotate(dx * 0.002f);
+						this.Spider.Rotate(dx * 0.002f);
 					}
 				}
 			}

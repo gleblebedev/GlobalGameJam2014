@@ -110,6 +110,11 @@ namespace Game.Model
 			this.y.Normalize();
 			this.z = Vector3.Cross(x, y);
 			this.z.Normalize();
+			if (float.IsNaN(x.X) || float.IsNaN(y.X) || float.IsNaN(z.X))
+			{
+				ResetRotOnError();
+				return;
+			}
 		}
 
 		public void ResetRotation()

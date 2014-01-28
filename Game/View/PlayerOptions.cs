@@ -21,6 +21,8 @@ namespace Game
 		public PlayerOptions()
 		{
 			InitializeComponent();
+			this.controlSelection.Items.Add("GamePad 1 (" + (OpenTK.Input.GamePad.GetState(0).IsConnected ? "Connected" : "Not connected") + ")");
+			this.controlSelection.Items.Add("GamePad 2 (" + (OpenTK.Input.GamePad.GetState(1).IsConnected ? "Connected" : "Not connected") + ")");
 		}
 
 		public int PlayerIndex

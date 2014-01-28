@@ -41,9 +41,9 @@ namespace Game.Model
 				case ControlType.Arrows:
 					return new ArrowsController(creature);
 				case ControlType.Gamepad1:
-					return new WasdController(creature);
+					return new GamePadController(0,creature);
 				case ControlType.Gamepad2:
-					return new WasdController(creature);
+					return new GamePadController(1,creature);
 				default:
 					throw new ArgumentOutOfRangeException("control");
 			}

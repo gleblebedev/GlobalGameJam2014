@@ -18,7 +18,7 @@ namespace Game.Model
 			{
 				fovy = maxfovy;
 			}
-			var p = Matrix4.CreatePerspectiveFieldOfView(fovy, aspect, 0.05f, 120.0f);
+			var p = Matrix4.CreatePerspectiveFieldOfView(fovy, aspect, 0.1f, 120.0f);
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadMatrix(ref p);
 			GL.MatrixMode(MatrixMode.Modelview);

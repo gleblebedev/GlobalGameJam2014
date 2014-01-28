@@ -1,13 +1,20 @@
 using System;
 using System.Windows.Forms;
 
+using OpenTK;
+using OpenTK.Input;
+
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+
 namespace Game.Model
 {
-	public class GamePadController : IController
+	public class GamePadController : BaseController, IController
 	{
-		public GamePadController(int index)
+		private readonly int index;
+
+		public GamePadController(int index,IControlledCreature spider):base(spider)
 		{
-			
+			this.index = index;
 		}
 
 		#region Implementation of IController
@@ -22,9 +29,34 @@ namespace Game.Model
 			
 		}
 
-		public void Update(TimeSpan dt)
+		public override void Update(TimeSpan dt)
 		{
-			
+			this.Spider.IsInMove = false;
+			base.Update(dt);
+
+			var state = OpenTK.Input.GamePad.GetState(index);
+			if (!state.IsConnected)
+				return;
+			var walk = state.ThumbSticks.Left.Y;
+			var rot = state.ThumbSticks.Left.X;
+			var pitch = state.ThumbSticks.Right.Y;
+			var eps = 0.15f;
+			if (walk > -eps && walk < eps) walk = 0;
+			if (rot > -eps && rot < eps) rot = 0;
+			if (pitch > -eps && pitch < eps) pitch = 0;
+			if (walk != 0)
+			{
+				this.Spider.Move(new Vector3(1,0,0), walk* (float)dt.TotalSeconds);
+				this.Spider.IsInMove = true;
+			}
+			if (rot != 0)
+			{
+				this.Spider.Rotate(-rot*(float)dt.TotalSeconds);
+			}
+			if (pitch != 0)
+			{
+				this.Spider.Pitch += (pitch * (float)dt.TotalSeconds);
+			}
 		}
 
 		public void OnMouseMove(MouseEventArgs mouseEventArgs)

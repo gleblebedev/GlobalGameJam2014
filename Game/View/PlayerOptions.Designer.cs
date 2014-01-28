@@ -29,10 +29,10 @@
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.controlSelection = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.controlSelection = new System.Windows.Forms.ComboBox();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -49,30 +49,6 @@
 			this.groupBox1.TabIndex = 2;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Player 1";
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(17, 26);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(43, 13);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "Control:";
-			// 
-			// controlSelection
-			// 
-			this.controlSelection.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.controlSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.controlSelection.FormattingEnabled = true;
-			this.controlSelection.Items.AddRange(new object[] {
-            "None (Disabled)",
-            "W A S D + Mouse",
-            "I J K L"});
-			this.controlSelection.Location = new System.Drawing.Point(66, 18);
-			this.controlSelection.Name = "controlSelection";
-			this.controlSelection.Size = new System.Drawing.Size(228, 21);
-			this.controlSelection.TabIndex = 0;
 			// 
 			// label2
 			// 
@@ -103,6 +79,30 @@
 			this.comboBox1.Name = "comboBox1";
 			this.comboBox1.Size = new System.Drawing.Size(228, 21);
 			this.comboBox1.TabIndex = 2;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(17, 26);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(43, 13);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "Control:";
+			// 
+			// controlSelection
+			// 
+			this.controlSelection.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.controlSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.controlSelection.FormattingEnabled = true;
+			this.controlSelection.Items.AddRange(new object[] {
+            "None (Disabled)",
+            "W A S D + Mouse",
+            "I J K L"});
+			this.controlSelection.Location = new System.Drawing.Point(66, 18);
+			this.controlSelection.Name = "controlSelection";
+			this.controlSelection.Size = new System.Drawing.Size(228, 21);
+			this.controlSelection.TabIndex = 0;
 			// 
 			// PlayerOptions
 			// 
